@@ -71,8 +71,8 @@ export default {
       try {
         this.$store.dispatch('getUserInfo', formData)
         // 获取强制登录跳转之前的路由地址
-        const { redirect } = this.$route.query
-        this.$router.replace(redirect || '/layout')
+        // const { redirect } = this.$route.query
+        // this.$router.replace(redirect || '/')
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
@@ -84,9 +84,11 @@ export default {
       this.$refs.form.validateField('mobile').then(async () => {
         // 发送请求获取验证码
         this.setCodeBtnDisable(5)
-        await auCode({
+        const { data: code } = await auCode({
           mobile: this.userInfo.mobile
         })
+        this.userInfo.code = code
+        this.$toast.success('获取验证码成功：' + code)
       })
     },
     // 封装设置发送验证码按钮状态函数
