@@ -1,6 +1,9 @@
 import request from '@/utils/request'
 
-// 接口：面试技巧列表
+/**
+ * @description: 面试技巧列表
+ * @param {*} params
+ */
 export const articlesTechnic = params => {
   return request({
     url: '/articles/technic',

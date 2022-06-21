@@ -36,7 +36,6 @@ const routes = [
           title: '刷题'
         }
       },
-
       {
         path: 'find',
         name: 'find',
@@ -45,7 +44,14 @@ const routes = [
           title: '发现'
         }
       },
-
+      {
+        path: 'findlist',
+        name: 'findlist',
+        component: () => import('@/views/find/components/FindList.vue'),
+        meta: {
+          title: '发现列表'
+        }
+      },
       {
         path: 'my',
         name: 'my',
