@@ -1,6 +1,9 @@
 import request from '@/utils/request'
 
-// 接口：热门数据
+/**
+ * @description: 热门职位数据
+ * @return {*}
+ */
 export const dataHot = () => {
   return request({
     url: '/chart-data/hot'

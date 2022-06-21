@@ -25,7 +25,10 @@ export const articlesTechnicTopSearch = () => {
   })
 }
 
-// 接口：面经列表
+/**
+ * @description: 面经分享列表
+ * @param {*} params
+ */
 export const articlesShare = params => {
   return request({
     url: '/articles/share',

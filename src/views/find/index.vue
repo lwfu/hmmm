@@ -10,7 +10,7 @@
         title="面试技巧"
         is-link
         value="查看更多"
-        to=""
+        :to="{ path: 'findlist' }"
       />
       <div class="article" v-for="l in list" :key="l.id">
         <div class="left">
@@ -37,32 +37,90 @@
         is-link
         value="查看更多"
       />
+      <div class="tags">
+        <span>{{ hot.city }}</span>
+        <span>{{ hot.position }}</span>
+      </div>
+      <div class="items">
+        <div class="item" v-for="(item, index) in hot.yearSalary" :key="index">
+          <div class="left">{{ item.year }}</div>
+          <div class="center">
+            <div class="inner"></div>
+          </div>
+          <div class="right"><van-icon name="arrow-up" />1%</div>
+        </div>
+      </div>
+      <div ref="more" class="more" @click="handleMore">
+        展开更多<van-icon name="arrow-down" />
+      </div>
+    </div>
+    <div class="share">
+      <van-cell
+        size="large"
+        :title-class="['title']"
+        title="面经分享"
+        is-link
+        value="查看更多"
+      />
+      <div class="s-items">
+        <div class="s-item" v-for="item in article" :key="item.id">
+          <div class="title">{{ item.title }}</div>
+          <div class="middle">{{ item.content }}</div>
+          <div class="bottom">
+            <span class="avatar"><img :src="item.author.avatar" alt="">{{ item.author.nickname }}</span>
+            <span>{{ item.updated_at }}</span>
+            <span class="comment">
+              <van-icon name="comment-o" />{{ item.article_comments }}
+            </span>
+            <span class="like">
+              <van-icon name="thumb-circle-o" />{{ item.star }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { articlesTechnic } from '@/api/articles'
+import { articlesShare, articlesTechnic } from '@/api/articles'
+import { dataHot } from '@/api/data'
 export default {
   name: 'Find',
   data () {
     return {
-      list: []
+      list: [], // 面试技巧
+      hot: {}, // 市场数据
+      article: [] // 分享
     }
   },
   async created () {
+    // 面试技巧
     const res = await articlesTechnic({
       start: 0,
       limit: 3
     })
-    console.log(res)
     this.list = res.data.list
+    // 市场数据
+    const res2 = await dataHot()
+    this.hot = res2.data
+    // 分享
+    const res3 = await articlesShare({
+      start: 0,
+      limit: 3
+    })
+    console.log(res3)
+    this.article = res3.data.list
+  },
+  methods: {
+    handleMore () {}
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .find {
+  padding-bottom: 50px;
   .border {
     height: 5px;
     background: rgb(237, 237, 237);
@@ -77,47 +135,133 @@ export default {
   }
   .content {
     border-bottom: 8px solid rgb(238, 238, 238);
-  }
-  .article {
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 16px;
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    .left {
-      flex: 1;
+    .article {
+      width: 100vw;
+      box-sizing: border-box;
+      padding: 0 16px;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
-      h3 {
-        width: 220px;
-        font-size: 16px;
-        word-wrap: break-word;
-        word-break: break-all;
-      }
-      .time {
-        color: #ccc;
+      padding-bottom: 20px;
+      .left {
+        flex: 1;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
-        margin-top: 10px;
-        p {
-          span {
-            &:nth-child(2) {
-              margin-left: 10px;
+        h3 {
+          width: 220px;
+          font-size: 16px;
+          word-wrap: break-word;
+          word-break: break-all;
+        }
+        .time {
+          color: #ccc;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px;
+          p {
+            span {
+              &:nth-child(2) {
+                margin-left: 10px;
+              }
             }
           }
         }
       }
+      .right {
+        margin-left: 15px;
+        width: 110px;
+        img {
+          width: 100%;
+          height: 100%;
+          vertical-align: middle;
+        }
+      }
     }
-    .right {
-      margin-left: 15px;
-      width: 110px;
-      // height: 75px;
-      img {
-        width: 100%;
-        height: 100%;
-        vertical-align: middle;
+  }
+  .market {
+    border-bottom: 8px solid rgb(238, 238, 238);
+    .tags {
+      padding: 0 16px;
+      margin-bottom: 10px;
+      span {
+        background-color: #ccc;
+        padding: 4px;
+        margin-right: 10px;
+      }
+    }
+    .items {
+      padding: 0 16px;
+      height: 125px;
+      overflow: hidden;
+      .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        .center {
+          flex: 1;
+          margin: 0 10px;
+          border-radius: 20px;
+          background-color: rgb(235, 235, 235);
+        }
+        .right {
+          ::v-deep .van-icon-arrow-up {
+            color: green;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    .more {
+      text-align: center;
+    }
+  }
+  .share {
+    .s-items {
+      padding: 0 16px;
+      .s-item {
+        border-bottom: 0.5px solid #ccc;
+        .title {
+          font-size: 16px;
+          font-weight: 600;
+          margin-top: 10px;
+        }
+        .middle {
+          overflow: hidden;
+          word-wrap: break-word;
+          word-break: break-all;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          font-size: 14px;
+          color: #666;
+          margin: 10px 0;
+        }
+        .bottom {
+          display: flex;
+          color: #ccc;
+          span {
+            &:nth-child(1) {
+              flex: 2;
+            }
+            &:nth-child(n + 2) {
+              flex: 1;
+            }
+          }
+          .avatar {
+            img {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+            }
+          }
+          .comment,
+          .like {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
       }
     }
   }
