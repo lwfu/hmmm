@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+import store from '../store/index'
 // 接口：获取验证码
 export const auCode = data => {
   return request({
@@ -30,13 +30,16 @@ export const auInfo = () => {
 // 接口：修改用户信息
 export const auEdit = data => {
   return request({
-    url: '/au/login',
+    url: '/au/edit',
     method: 'POST',
-    data
+    data,
+    headers: {
+      authorization: 'Bearer ' + store.state.token
+    }
   })
 }
 
-// 接口：修改用户信息
+// 接口：文件上传
 export const upLoad = data => {
   return request({
     url: '/upload',

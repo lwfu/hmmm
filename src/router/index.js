@@ -28,7 +28,7 @@ const routes = [
           title: '公司'
         }
       },
-      
+
       {
         path: 'question',
         name: 'question',
@@ -53,6 +53,14 @@ const routes = [
         component: () => import('@/views/my/index.vue'),
         meta: {
           title: '我的'
+        }
+      },
+      {
+        path: 'edit',
+        // 路由懒加载
+        component: () => import('../views/my/edit.vue'),
+        meta: {
+          needLogin: true
         }
       }
     ]

@@ -28,8 +28,9 @@ export default new Vuex.Store({
   },
   actions: {
     // 获取用户信息
-    async getUserInfo ({ commit }, value) {
+    async getUserInfo({ commit }, value) {
       const res = await auLogin(value)
+      console.log(res);
       if (res.data) {
         commit('SET_TOKEN', res.data.jwt)
         commit('SET_USERINFO', res.data.user)
