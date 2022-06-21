@@ -28,7 +28,6 @@ const routes = [
           title: '公司'
         }
       },
-      
       {
         path: 'question',
         name: 'question',
