@@ -49,7 +49,8 @@ const routes = [
         name: 'findlist',
         component: () => import('@/views/find/components/FindList.vue'),
         meta: {
-          title: '发现列表'
+          title: '发现列表',
+          noTabbar: true
         }
       },
       {
