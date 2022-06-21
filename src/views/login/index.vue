@@ -69,10 +69,10 @@ export default {
     async onSubmit (formData) {
       this.isLoading = true
       try {
-        this.$store.dispatch('getUserInfo', formData)
+        await this.$store.dispatch('getUserInfo', formData)
         // 获取强制登录跳转之前的路由地址
-        // const { redirect } = this.$route.query
-        // this.$router.replace(redirect || '/')
+        const { redirect } = this.$route.query
+        this.$router.replace(redirect || '/')
         this.isLoading = false
       } catch (error) {
         this.isLoading = false

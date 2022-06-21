@@ -6,7 +6,6 @@ const whiteList = ['/login']
 
 router.beforeEach(async(to, from, next) => {
   document.title = to.meta.title ? to.meta.title + ' - 黑马面面' : '黑马面面'
-  next()
   // 判断是否登录
   if (store.getters.token) {
     // 判断登录后是否还要访问登录页
