@@ -54,6 +54,25 @@ const routes = [
         }
       },
       {
+        path: 'sharelist',
+        name: 'sharelist',
+        component: () => import('@/views/find/components/ShareList.vue'),
+        meta: {
+          title: '分享列表',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'sharedetail/:id',
+        name: 'sharedetail',
+        component: () => import('@/views/find/components/ShareDetail.vue'),
+        meta: {
+          title: '面经详情',
+          noTabbar: true
+        }
+
+      },
+      {
         path: 'my',
         name: 'my',
         component: () => import('@/views/my/index.vue'),

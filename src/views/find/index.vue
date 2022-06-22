@@ -10,7 +10,7 @@
         title="面试技巧"
         is-link
         value="查看更多"
-        :to="{ path: 'findlist' }"
+        :to="{ name: 'findlist' }"
       />
       <div class="article" v-for="l in list" :key="l.id">
         <div class="left">
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="right">
-          <img :src="l.cover" alt="" />
+          <img :src="`http://hmmm.zllhyy.cn${l.cover}`" alt="" />
         </div>
       </div>
     </div>
@@ -42,18 +42,36 @@
         <span>{{ hot.position }}</span>
       </div>
       <div class="items">
-        <div class="item" v-for="(item, index) in hot.yearSalary" :key="index">
+        <div class="item" v-for="(item, index) in showMoreList" :key="index">
           <div class="left">{{ item.year }}</div>
           <div class="center">
-            <div class="inner"></div>
+            <div
+              class="inner"
+              :style="{ width: `${(item.salary / hot.topSalary) * 100}%` }"
+            >
+              ￥{{ item.salary }}
+            </div>
           </div>
-          <div class="right"><van-icon name="arrow-up" />1%</div>
+          <div class="right">
+            <img
+              :src="
+                item.percent > 0
+                  ? 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/7c58537d-1645-4fec-bd33-7bec566f1a69.3750B820-E5FA-476B-82CE-6E05E71FF960.png'
+                  : 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/f3055e32-9e30-4f43-bfc7-c90397dc4d64.B24FA884-A8D1-4B8B-BB9A-0688CAECF085.png'
+              "
+              alt=""
+            />
+            {{ item.percent }}%
+          </div>
         </div>
       </div>
-      <div ref="more" class="more" @click="handleMore">
-        展开更多<van-icon name="arrow-down" />
+      <div class="more" @click="handleMore">
+        {{ isMore ? '收起' : '展开更多' }}
+        <span v-show="!isMore"><van-icon name="arrow-down" /></span>
+        <span v-show="isMore"><van-icon name="arrow-up" /></span>
       </div>
     </div>
+    <!-- 面经分享 -->
     <div class="share">
       <van-cell
         size="large"
@@ -61,13 +79,17 @@
         title="面经分享"
         is-link
         value="查看更多"
+        :to="{ name: 'sharelist' }"
       />
       <div class="s-items">
         <div class="s-item" v-for="item in article" :key="item.id">
           <div class="title">{{ item.title }}</div>
           <div class="middle">{{ item.content }}</div>
           <div class="bottom">
-            <span class="avatar"><img :src="item.author.avatar" alt="">{{ item.author.nickname }}</span>
+            <span class="avatar">
+              <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
+              {{ item.author.nickname }}
+            </span>
             <span>{{ item.updated_at }}</span>
             <span class="comment">
               <van-icon name="comment-o" />{{ item.article_comments }}
@@ -76,6 +98,7 @@
               <van-icon name="thumb-circle-o" />{{ item.star }}
             </span>
           </div>
+          <van-divider />
         </div>
       </div>
     </div>
@@ -91,7 +114,21 @@ export default {
     return {
       list: [], // 面试技巧
       hot: {}, // 市场数据
-      article: [] // 分享
+      article: [], // 分享
+      hotArr: [], // 工资数组
+      isMore: false // 是否展开更多
+    }
+  },
+  computed: {
+    showMoreList () {
+      if (!this.isMore) {
+        // 处于收起状态，显示四个数组元素
+        const moreArr = this.hotArr.slice(0, 4)
+        return moreArr
+      } else {
+        // 处于展开状态，显示全部数组元素
+        return this.hotArr
+      }
     }
   },
   async created () {
@@ -104,16 +141,21 @@ export default {
     // 市场数据
     const res2 = await dataHot()
     this.hot = res2.data
+    console.log(res2)
+    this.hotArr = res2.data.yearSalary.reverse()
+
     // 分享
     const res3 = await articlesShare({
       start: 0,
       limit: 3
     })
-    console.log(res3)
+
     this.article = res3.data.list
   },
   methods: {
-    handleMore () {}
+    handleMore () {
+      this.isMore = !this.isMore
+    }
   }
 }
 </script>
@@ -122,7 +164,7 @@ export default {
 .find {
   padding-bottom: 50px;
   .border {
-    height: 5px;
+    height: 3px;
     background: rgb(237, 237, 237);
   }
   .title {
@@ -184,42 +226,61 @@ export default {
       padding: 0 16px;
       margin-bottom: 10px;
       span {
-        background-color: #ccc;
+        background-color: rgba(229, 229, 229, 0.5);
         padding: 4px;
         margin-right: 10px;
       }
     }
     .items {
       padding: 0 16px;
-      height: 125px;
-      overflow: hidden;
+      margin-bottom: 10px;
       .item {
+        height: 16px;
         display: flex;
         justify-content: space-between;
         padding: 6px 0;
+        .left {
+          font-size: 12px;
+          width: 70px;
+        }
         .center {
           flex: 1;
           margin: 0 10px;
           border-radius: 20px;
           background-color: rgb(235, 235, 235);
+          .inner {
+            background-color: #fe6d67;
+            border-radius: 16px;
+            text-align: right;
+            color: #fff;
+            font-size: 12px;
+            padding: 0 10px;
+            box-sizing: border-box;
+          }
         }
         .right {
+          width: 52px;
           ::v-deep .van-icon-arrow-up {
             color: green;
             font-weight: 600;
+          }
+          img {
+            width: 15px;
+            height: 15px;
           }
         }
       }
     }
     .more {
       text-align: center;
+      margin-bottom: 10px;
     }
+
   }
   .share {
     .s-items {
       padding: 0 16px;
       .s-item {
-        border-bottom: 0.5px solid #ccc;
         .title {
           font-size: 16px;
           font-weight: 600;

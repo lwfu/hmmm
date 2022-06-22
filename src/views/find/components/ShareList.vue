@@ -1,5 +1,5 @@
 <template>
-  <div class="find-list">
+  <div class="share-list">
     <van-nav-bar
       title="面试技巧"
       fixed
@@ -14,30 +14,26 @@
       shape="round"
     />
     <div class="border"></div>
-    <Article></Article>
+    <ShareArticle></ShareArticle>
   </div>
 </template>
 
 <script>
-import Article from './Article.vue'
+import ShareArticle from './ShareArticle.vue'
+
 export default {
-  name: 'FindList',
-  components: { Article },
+  name: 'ShareList',
+  components: { ShareArticle },
   data () {
     return {
       value: ''
-    }
-  },
-  methods: {
-    handleMore () {
-      this.$refs.more.classList.toggle('active')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.find-list {
+.share-list {
   position: relative;
   .border {
     height: 3px;

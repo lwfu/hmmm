@@ -36,10 +36,13 @@ export const articlesShare = params => {
   })
 }
 
-// 接口：面经详情
+/**
+ * @description: 面经详情
+ * @param {*} id
+ */
 export const articlesShareDetail = id => {
   return request({
-    url: '/articles/share' + id
+    url: '/articles/share/' + id
   })
 }
 
