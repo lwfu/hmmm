@@ -2,9 +2,10 @@
   <div class="login-view">
     <van-nav-bar @click-left="$router.push('/find')" left-arrow />
     <div class="container">
-      <h3>短信登录</h3>
+      <h3>您好，请登录</h3>
       <van-form @submit="onSubmit" :show-error="false" ref="form">
         <van-field
+          left-icon="phone"
           v-model="userInfo.mobile"
           name="mobile"
           placeholder="请输入手机号"
@@ -12,6 +13,8 @@
           :rules="rules.mobileRule"
         />
         <van-field
+          class="codeIcon"
+          left-icon="passed"
           v-model="userInfo.code"
           name="code"
           placeholder="请输入验证码"
@@ -35,7 +38,7 @@
           <van-button
             round
             block
-            color="linear-gradient(90deg,#fe4f4f,#fc6627)"
+            color="#ee0a24"
             native-type="submit"
             :loading="isLoading"
             >确定</van-button
@@ -55,7 +58,7 @@ export default {
       // 用户表单信息
       userInfo: {
         mobile: '18888888888',
-        code: '2468'
+        code: ''
       },
       // 发送验证码按钮状态
       codeBtnDisable: false,
@@ -137,10 +140,13 @@ export default {
   height: 100vh;
   background-color: #f9f9f9;
   .container {
-    padding: 0 32px;
+    padding: 0 20px;
+    .codeIcon {
+      margin: auto 0;
+    }
     h3 {
       padding: 40px 0;
-      font-size: 30px;
+      font-size: 18px;
       font-weight: 700;
     }
     .getCode {
