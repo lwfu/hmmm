@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { 
+import {
   ActionSheet,
   Button,
   Cell,

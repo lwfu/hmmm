@@ -2,9 +2,9 @@ import router from './router'
 import store from './store'
 
 // 白名单
-const whiteList = ['/login']
+const whiteList = ['/login', '/company', '/find']
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title ? to.meta.title + ' - 黑马面面' : '黑马面面'
   // 判断是否登录
   if (store.getters.token) {
@@ -28,5 +28,4 @@ router.beforeEach(async(to, from, next) => {
   }
 })
 
-router.afterEach((to, from) => {
-})
+router.afterEach((to, from) => {})

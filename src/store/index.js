@@ -12,15 +12,15 @@ export default new Vuex.Store({
   },
   mutations: {
     // 存储Token
-    SET_TOKEN(state, value) {
+    SET_TOKEN (state, value) {
       state.token = value
     },
     // 存储用户信息
-    SET_USERINFO(state, value) {
+    SET_USERINFO (state, value) {
       state.userInfo = value
     },
     // 退出
-    LOGOUT(state) {
+    LOGOUT (state) {
       state.token = ''
       state.userInfo = ''
       router.push('/login?backUrl=' + location.href.split('#')[1])

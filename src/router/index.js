@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/my'
+    redirect: '/login'
   },
 
   {
@@ -28,7 +28,7 @@ const routes = [
           title: '公司'
         }
       },
-      
+
       {
         path: 'question',
         name: 'question',

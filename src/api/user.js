@@ -23,7 +23,7 @@ export const auLogin = data => {
 // 接口：用户信息
 export const auInfo = () => {
   return request({
-    url: '/au/login'
+    url: '/au/info'
   })
 }
 

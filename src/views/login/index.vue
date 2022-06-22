@@ -1,5 +1,6 @@
 <template>
   <div class="login-view">
+    <van-nav-bar @click-left="$router.push('/find')" left-arrow />
     <div class="container">
       <h3>短信登录</h3>
       <van-form @submit="onSubmit" :show-error="false" ref="form">
@@ -12,17 +13,33 @@
         />
         <van-field
           v-model="userInfo.code"
-          type="password"
           name="code"
           placeholder="请输入验证码"
           :rules="rules.codeRule"
         >
           <template #button>
-            <van-button size="small" native-type="button" @click="getCode" :disabled="codeBtnDisable">{{ codeBtnContent }}</van-button>
+            <van-button
+              class="getCode"
+              size="small"
+              native-type="button"
+              @click="getCode"
+              :disabled="codeBtnDisable"
+              >{{ codeBtnContent }}</van-button
+            >
           </template>
         </van-field>
+        <p>
+          登录既同意<span>《用户使用协议》</span>和<span>《隐私协议》</span>
+        </p>
         <div>
-          <van-button block color="linear-gradient(90deg,#fe4f4f,#fc6627)" native-type="submit" :loading="isLoading">登录</van-button>
+          <van-button
+            round
+            block
+            color="linear-gradient(90deg,#fe4f4f,#fc6627)"
+            native-type="submit"
+            :loading="isLoading"
+            >确定</van-button
+          >
         </div>
       </van-form>
     </div>
@@ -43,7 +60,7 @@ export default {
       // 发送验证码按钮状态
       codeBtnDisable: false,
       // 发送验证码按钮文字
-      codeBtnContent: '发送验证码',
+      codeBtnContent: '获取验证码',
       // 表单验证规则
       rules: {
         mobileRule: [
@@ -116,17 +133,31 @@ export default {
     color: #999;
   }
 }
-.container {
-  padding: 0 32px;
-  h3 {
-    padding: 30px 0;
-    font-size: 30px;
-    font-weight: normal;
-  }
-  .van-button {
-    border: none;
-    &[type="submit"] {
-      margin: 16px 0;
+.login-view {
+  height: 100vh;
+  background-color: #f9f9f9;
+  .container {
+    padding: 0 32px;
+    h3 {
+      padding: 40px 0;
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .getCode {
+      color: #44c4dc;
+    }
+    p {
+      font-size: 12px;
+      margin-top: 8px;
+      span {
+        color: #44c4dc;
+      }
+    }
+    .van-button {
+      border: none;
+      &[type='submit'] {
+        margin: 16px 0;
+      }
     }
   }
 }
