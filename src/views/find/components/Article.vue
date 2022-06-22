@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="article" v-for="l in list" :key="l.id">
+    <div class="article" v-for="l in list" :key="l.id" @click="goTechnic(l.id)">
       <div class="left">
         <h3>{{ l.title }}</h3>
         <div class="time">
@@ -34,6 +34,16 @@ export default {
       limit: 5
     })
     this.list = res.data.list
+  },
+  methods: {
+    goTechnic (id) {
+      this.$router.push({
+        name: 'technic',
+        params: {
+          id
+        }
+      })
+    }
   }
 }
 </script>

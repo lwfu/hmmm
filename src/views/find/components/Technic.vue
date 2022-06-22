@@ -1,0 +1,59 @@
+<template>
+  <div class="technic">
+    <van-nav-bar fixed placeholder left-arrow @click-left="$router.go(-1)" />
+    <div class="content">
+      <header>
+        <h2>{{ technic.title }}</h2>
+      </header>
+      <div class="time">
+        <span>{{ technic.updated_at }}</span>
+        <div class="info">
+          <span><van-icon name="eye-o" />{{ technic.read }}</span>
+          <span><van-icon name="good-job-o" />{{ technic.star }}</span>
+        </div>
+      </div>
+      <div v-html="technic.content"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { articlesTechnicDetail } from '@/api/articles'
+export default {
+  name: 'Technic',
+  data () {
+    return {
+      technic: {}
+    }
+  },
+  async created () {
+    const res = await articlesTechnicDetail(this.$route.params.id)
+    console.log(res)
+    this.technic = res.data
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.technic {
+  .content {
+    padding: 10px;
+    header {
+      h2 {
+        font-size: 22px;
+      }
+      margin-bottom: 16px;
+    }
+    .time {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      .info {
+        span {
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -70,7 +70,15 @@ const routes = [
           title: '面经详情',
           noTabbar: true
         }
-
+      },
+      {
+        path: 'technic/:id',
+        name: 'technic',
+        component: () => import('@/views/find/components/Technic.vue'),
+        meta: {
+          title: '面试技巧详情',
+          noTabbar: true
+        }
       },
       {
         path: 'my',

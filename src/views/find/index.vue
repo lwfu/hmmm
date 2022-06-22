@@ -12,7 +12,12 @@
         value="查看更多"
         :to="{ name: 'findlist' }"
       />
-      <div class="article" v-for="l in list" :key="l.id">
+      <div
+        class="article"
+        v-for="l in list"
+        :key="l.id"
+        @click="goTechnic(l.id)"
+      >
         <div class="left">
           <h3>{{ l.title }}</h3>
           <div class="time">
@@ -67,8 +72,8 @@
       </div>
       <div class="more" @click="handleMore">
         {{ isMore ? '收起' : '展开更多' }}
-        <span v-show="!isMore"><van-icon name="arrow-down" /></span>
-        <span v-show="isMore"><van-icon name="arrow-up" /></span>
+        <span v-show="!isMore"><van-icon name="arrow-down"/></span>
+        <span v-show="isMore"><van-icon name="arrow-up"/></span>
       </div>
     </div>
     <!-- 面经分享 -->
@@ -82,7 +87,12 @@
         :to="{ name: 'sharelist' }"
       />
       <div class="s-items">
-        <div class="s-item" v-for="item in article" :key="item.id" @click="goShareDetail(item.id)">
+        <div
+          class="s-item"
+          v-for="item in article"
+          :key="item.id"
+          @click="goShareDetail(item.id)"
+        >
           <div class="title">{{ item.title }}</div>
           <div class="middle">{{ item.content }}</div>
           <div class="bottom">
@@ -159,6 +169,14 @@ export default {
     goShareDetail (id) {
       this.$router.push({
         name: 'sharedetail',
+        params: {
+          id
+        }
+      })
+    },
+    goTechnic (id) {
+      this.$router.push({
+        name: 'technic',
         params: {
           id
         }
@@ -283,7 +301,6 @@ export default {
       text-align: center;
       margin-bottom: 10px;
     }
-
   }
   .share {
     .s-items {
