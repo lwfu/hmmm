@@ -52,10 +52,14 @@ export const articlesShareTopSearch = () => {
     url: '/articles/shareTopSearch'
   })
 }
-// 接口：面经评论
+
+/**
+ * @description: 面经评论
+ * @param {*} params
+ */
 export const articlesComments = params => {
   return request({
-    url: '/articles/comments' + params.id,
+    url: '/articles/comments/' + params.id,
     params
   })
 }

@@ -16,16 +16,22 @@
       </div>
       <div v-html="detail.content"></div>
     </div>
+    <Comment :id="$route.params.id"></Comment>
   </div>
 </template>
 
 <script>
 import { articlesShareDetail } from '@/api/articles'
+import Comment from './Comment'
+
 export default {
   name: 'ShareDetail',
+  components: { Comment },
   data () {
     return {
-      detail: ''
+      detail: {
+        author: {}
+      }
     }
   },
   async created () {
@@ -39,6 +45,7 @@ export default {
 .share-detail {
   .content {
     padding: 10px;
+    border-bottom: 6px solid #f5f5f5;
     header {
       h2 {
         font-size: 22px;

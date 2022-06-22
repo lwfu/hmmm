@@ -82,7 +82,7 @@
         :to="{ name: 'sharelist' }"
       />
       <div class="s-items">
-        <div class="s-item" v-for="item in article" :key="item.id">
+        <div class="s-item" v-for="item in article" :key="item.id" @click="goShareDetail(item.id)">
           <div class="title">{{ item.title }}</div>
           <div class="middle">{{ item.content }}</div>
           <div class="bottom">
@@ -155,6 +155,14 @@ export default {
   methods: {
     handleMore () {
       this.isMore = !this.isMore
+    },
+    goShareDetail (id) {
+      this.$router.push({
+        name: 'sharedetail',
+        params: {
+          id
+        }
+      })
     }
   }
 }
