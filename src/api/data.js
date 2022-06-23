@@ -1,13 +1,19 @@
 import request from '@/utils/request'
 
-// 接口：热门数据
+/**
+ * @description: 热门职位数据
+ * @return {*}
+ */
 export const dataHot = () => {
   return request({
-    url: '/chart-data/hot'
+    url: '/chart-data/hot',
+    noToken: true
   })
 }
 
-// 接口：城市索引
+/**
+ * @description: 城市索引
+ */
 export const dataIndexes = () => {
   return request({
     url: '/chart-data/indexes'

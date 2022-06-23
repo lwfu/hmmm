@@ -1,56 +1,80 @@
 import request from '@/utils/request'
 
-// 接口：面试技巧列表
+/**
+ * @description: 面试技巧列表
+ * @param {*} params
+ */
 export const articlesTechnic = params => {
   return request({
     url: '/articles/technic',
-    params
+    params,
+    noToken: true
   })
 }
 
 // 接口：面试技巧详情
 export const articlesTechnicDetail = id => {
   return request({
-    url: '/articles/technic/' + id
+    url: '/articles/technic/' + id,
+    noToken: true
   })
 }
 
 // 接口：面试技巧热搜
 export const articlesTechnicTopSearch = () => {
   return request({
-    url: '/articles/technicTopSearch'
+    url: '/articles/technicTopSearch',
+    noToken: true
   })
 }
 
-// 接口：面经列表
+/**
+ * @description: 面经分享列表
+ * @param {*} params
+ */
 export const articlesShare = params => {
   return request({
     url: '/articles/share',
-    params
+    params,
+    noToken: true
   })
 }
 
-// 接口：面经详情
+/**
+ * @description: 面经详情
+ * @param {*} id
+ */
 export const articlesShareDetail = id => {
   return request({
-    url: '/articles/share' + id
+    url: '/articles/share/' + id,
+    noToken: true
   })
 }
 
 // 接口：面经热搜
 export const articlesShareTopSearch = () => {
   return request({
-    url: '/articles/shareTopSearch'
+    url: '/articles/shareTopSearch',
+    noToken: true
   })
 }
-// 接口：面经评论
+
+/**
+ * @description: 面经评论
+ * @param {*} params
+ */
 export const articlesComments = params => {
   return request({
-    url: '/articles/comments' + params.id,
-    params
+    url: '/articles/comments/' + params.id,
+    params,
+    noToken: true
   })
 }
-// 接口：发表评论
+
+/**
+ * @description: 发表评论
+ * @param {*} data
+ */
 export const setarticlesComments = data => {
   return request({
     url: '/articles/comments',
@@ -76,6 +100,7 @@ export const articlesCollect = data => {
     data
   })
 }
+
 // 接口：合并历史
 export const articlesMergeHistory = data => {
   return request({

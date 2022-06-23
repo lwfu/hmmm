@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/my'
   },
 
   {
@@ -37,7 +37,6 @@ const routes = [
           title: '刷题'
         }
       },
-
       {
         path: 'find',
         name: 'find',
@@ -46,7 +45,51 @@ const routes = [
           title: '发现'
         }
       },
-
+      {
+        path: 'findlist',
+        name: 'findlist',
+        component: () => import('@/views/find/components/FindList.vue'),
+        meta: {
+          title: '发现列表',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'sharelist',
+        name: 'sharelist',
+        component: () => import('@/views/find/components/ShareList.vue'),
+        meta: {
+          title: '分享列表',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'sharedetail/:id',
+        name: 'sharedetail',
+        component: () => import('@/views/find/components/ShareDetail.vue'),
+        meta: {
+          title: '面经详情',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'technic/:id',
+        name: 'technic',
+        component: () => import('@/views/find/components/Technic.vue'),
+        meta: {
+          title: '面试技巧详情',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'marketdata',
+        name: 'marketdata',
+        component: () => import('@/views/find/components/MarketDate.vue'),
+        meta: {
+          title: '市场数据',
+          noTabbar: true
+        }
+      },
       {
         path: 'my',
         name: 'my',

@@ -34,7 +34,8 @@ import {
   GoodsActionButton,
   GoodsActionIcon,
   Loading,
-  Tag
+  Tag,
+  Switch
 } from 'vant'
 
 Vue.use(Button)
@@ -71,3 +72,4 @@ Vue.use(GoodsActionButton)
 Vue.use(GoodsActionIcon)
 Vue.use(Loading)
 Vue.use(Tag)
+Vue.use(Switch)

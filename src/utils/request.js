@@ -3,38 +3,13 @@ import store from '@/store'
 import { Toast } from 'vant'
 
 const request = axios.create({
-<<<<<<< HEAD
-  baseURL: 'http://hmmm.zllhyy.cn',
-  timeout: 5000
-=======
   baseURL: 'http://hmmm.zllhyy.cn'
->>>>>>> lwf
 })
 
 
 let cancelFns = []
 let toast;
 // 请求拦截器
-<<<<<<< HEAD
-request.interceptors.request.use(
-  config => {
-    return config
-  },
-  err => {
-    return Promise.reject(err)
-  }
-)
-
-// 响应拦截器
-request.interceptors.response.use(
-  res => {
-    return res.data
-  },
-  err => {
-    return Promise.reject(err)
-  }
-)
-=======
 request.interceptors.request.use(config => {
   if (!config.noToken) config.headers.authorization = `Bearer ${store.getters.token}`
 
@@ -80,6 +55,5 @@ request.interceptors.response.use(res => {
 }, err => {
   return Promise.reject(err)
 })
->>>>>>> lwf
 
 export default request
