@@ -5,28 +5,27 @@
         评论<span>{{ comment.total }}</span>
       </h3>
     </header>
-    <div class="pinglun" v-for="item in comment" :key="item.id">
+    <div class="pinglun" v-for="item in comment.list" :key="item.id">
       <div class="avatar">
         <div class="left">
           <div class="pic">
-            <img
-              :src="
-                comment.author
-                  ? comment.author.avatar
-                  : 'http://hmmm.zllhyy.cn/uploads/avatar09_4b071982f9.jpeg'
-              "
-              alt=""
-            />
+            <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
           </div>
           <div class="info">
-            <p>{{ comment.author ? comment.author.nickname : '妮妮' }}</p>
-            <p>2小时前</p>
+            <p>{{ item.author.nickname }}</p>
+            <p class="time">{{ item.created_at | formatTime }}</p>
           </div>
         </div>
-        <div class="like">{{item.star ? item.star : '1'}}<van-icon name="good-job-o" /></div>
+        <div class="like">{{ item.star }}<van-icon name="good-job-o" /></div>
       </div>
       <div class="content">
-        <p>{{item.content ? item.content : '一条评论信息'}}</p>
+        <p>{{ item.content }}</p>
+        <div class="reply" v-if="item.children_comments.length">
+          <p v-for="i in item.children_comments" :key="i.id">
+            <span class="huifu">{{ i.author }}</span
+            >: {{ i.content }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -39,7 +38,9 @@ export default {
   props: ['id'],
   data () {
     return {
-      comment: {}
+      comment: {
+        author: {}
+      }
     }
   },
   async mounted () {
@@ -89,10 +90,29 @@ export default {
             object-fit: cover;
           }
         }
+        .info {
+          .time {
+            color: #ccc;
+            font-size: 12px;
+          }
+        }
       }
     }
     .content {
-      padding: 0 54px;
+      padding: 0 4px 6px 54px;
+      .reply {
+        width: 100%;
+        background-color: rgba(230, 230, 230, 0.5);
+        margin-top: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        p {
+          padding: 4px 0;
+          .huifu {
+            font-weight: 520;
+          }
+        }
+      }
     }
   }
 }

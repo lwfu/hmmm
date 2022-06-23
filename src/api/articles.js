@@ -63,7 +63,11 @@ export const articlesComments = params => {
     params
   })
 }
-// 接口：发表评论
+
+/**
+ * @description: 发表评论
+ * @param {*} data
+ */
 export const setarticlesComments = data => {
   return request({
     url: '/articles/comments',

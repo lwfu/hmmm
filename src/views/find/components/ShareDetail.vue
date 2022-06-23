@@ -17,11 +17,24 @@
       <div v-html="detail.content"></div>
     </div>
     <Comment :id="$route.params.id"></Comment>
+    <!-- 输入框 -->
+    <div class="inp">
+      <van-field v-model="value" placeholder="我来补充两句" @keyup.enter="send" />
+      <div class="right">
+        <div class="collect">
+          <van-icon name="star-o" />{{ detail.collect }}
+        </div>
+        <div class="like"><van-icon name="good-job-o" />{{ detail.star }}</div>
+        <div class="share">
+          <van-icon name="share-o" />{{ detail.share || 0 }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { articlesShareDetail } from '@/api/articles'
+import { articlesShareDetail, setarticlesComments } from '@/api/articles'
 import Comment from './Comment'
 
 export default {
@@ -31,12 +44,23 @@ export default {
     return {
       detail: {
         author: {}
-      }
+      },
+      value: '', // 输入框内容
+      id: this.$route.params.id // 文章id
     }
   },
   async created () {
-    const res = await articlesShareDetail(this.$route.params.id)
+    const res = await articlesShareDetail(this.id)
     this.detail = res.data
+  },
+  methods: {
+    async send () {
+      const res = await setarticlesComments({
+        content: this.value,
+        article: this.id
+      })
+      console.log(res)
+    }
   }
 }
 </script>
@@ -72,6 +96,31 @@ export default {
           &:nth-child(2) {
             color: #ccc;
           }
+        }
+      }
+    }
+  }
+  .inp {
+    display: flex;
+    padding-right: 12px;
+    ::v-deep .van-field__control {
+      padding: 6px 4px;
+      background-color: rgba(240, 240, 240, 0.6);
+    }
+    .right {
+      display: flex;
+      justify-content: space-between;
+      .collect,
+      .like,
+      .share {
+        padding: 0 6px;
+        color: #c5c5c5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        ::v-deep .van-icon {
+          font-size: 20px;
         }
       }
     }
