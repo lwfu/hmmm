@@ -9,7 +9,6 @@ export default new Vuex.Store({
   state: {
     token: '',
     userInfo: '',
-    photo: ''
   },
   mutations: {
     // 存储Token
@@ -20,16 +19,10 @@ export default new Vuex.Store({
     SET_USERINFO (state, value) {
       state.userInfo = value
     },
-    // 头像
-    SET_PHOTO(state, value) {
-      state.photo = value
-    },
-
     // 退出
     LOGOUT (state) {
       state.token = ''
       state.userInfo = ''
-      state.photo = ''
       router.push('/login?backUrl=' + location.href.split('#')[1])
     }
   },
@@ -40,14 +33,12 @@ export default new Vuex.Store({
       if (res.data) {
         commit('SET_TOKEN', res.data.jwt)
         commit('SET_USERINFO', res.data.user)
-        commit('SET_PHOTO', "http://hmmm.zllhyy.cn" + res.data.user.avatar)
       }
     }
   },
   getters: {
     token: state => state.token,
-    userInfo: state => state.userInfo,
-    photo: state => state.photo
+    userInfo: state => state.userInfo
   },
   plugins: [
     persisitedState({

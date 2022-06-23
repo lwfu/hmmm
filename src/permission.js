@@ -23,6 +23,7 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.path)) {
       next()
     } else {
+      console.log(1)
       next('/login')
     }
   }

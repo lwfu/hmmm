@@ -24,7 +24,6 @@
 
 <script>
 import { upLoad, auEdit } from "../../api/user";
-import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -32,10 +31,6 @@ export default {
       pic: "",
     };
   },
-  computed: {
-    ...mapState(["photo"]),
-  },
-
   methods: {
     // 上传前
     beforeRead(file) {

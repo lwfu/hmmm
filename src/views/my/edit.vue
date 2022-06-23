@@ -92,7 +92,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["userInfo", "photo"]),
+    ...mapGetters(["userInfo"]),
   },
   methods: {
     // 修改姓名
