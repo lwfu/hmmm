@@ -97,7 +97,23 @@ const routes = [
         meta: {
           title: '我的'
         }
-      }
+      },
+      {
+        path: 'edit',
+        // 路由懒加载
+        component: () => import('../views/my/edit.vue'),
+        meta: {
+          noTabbar: true
+        }
+      },
+      {
+        path: 'photo',
+        // 路由懒加载
+        component: () => import('../views/my/photo.vue'),
+        meta: {
+          noTabbar: true
+        }
+      },
     ]
   },
 
