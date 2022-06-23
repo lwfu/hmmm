@@ -91,6 +91,15 @@ const routes = [
         }
       },
       {
+        path: 'sharesearch',
+        name: 'sharesearch',
+        component: () => import('@/views/find/components/ShareSearch.vue'),
+        meta: {
+          title: '面经热搜',
+          noTabbar: true
+        }
+      },
+      {
         path: 'my',
         name: 'my',
         component: () => import('@/views/my/index.vue'),
@@ -113,7 +122,7 @@ const routes = [
         meta: {
           noTabbar: true
         }
-      },
+      }
     ]
   },
 

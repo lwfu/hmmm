@@ -8,74 +8,31 @@
       @click-left="$router.go(-1)"
     />
     <van-dropdown-menu>
-      <van-dropdown-item v-model="value" :options="option">
+      <van-dropdown-item :title="city" ref="item">
         <van-index-bar>
-          <van-index-anchor index="热门" />
-          <van-cell
-            :title="item[0]"
-            v-for="(item, index) in hotArr"
-            :key="index"
-          />
-          <van-index-anchor index="B" />
-          <van-cell :title="item[0]" v-for="item in cityArr.B" :key="item[0]" />
-          <van-index-anchor index="C" />
-          <van-cell :title="item[0]" v-for="item in cityArr.C" :key="item[0]" />
-          <van-index-anchor index="D" />
-          <van-cell :title="item[0]" v-for="item in cityArr.D" :key="item[0]" />
-          <van-index-anchor index="E" />
-          <van-cell :title="item[0]" v-for="item in cityArr.E" :key="item[0]" />
-          <van-index-anchor index="F" />
-          <van-cell :title="item[0]" v-for="item in cityArr.F" :key="item[0]" />
-          <van-index-anchor index="G" />
-          <van-cell :title="item[0]" v-for="item in cityArr.G" :key="item[0]" />
-          <van-index-anchor index="H" />
-          <van-cell :title="item[0]" v-for="item in cityArr.H" :key="item[0]" />
-          <van-index-anchor index="I" />
-          <van-cell :title="item[0]" v-for="item in cityArr.I" :key="item[0]" />
-          <van-index-anchor index="J" />
-          <van-cell :title="item[0]" v-for="item in cityArr.J" :key="item[0]" />
-          <van-index-anchor index="K" />
-          <van-cell :title="item[0]" v-for="item in cityArr.K" :key="item[0]" />
-          <van-index-anchor index="L" />
-          <van-cell :title="item[0]" v-for="item in cityArr.L" :key="item[0]" />
-          <van-index-anchor index="M" />
-          <van-cell :title="item[0]" v-for="item in cityArr.M" :key="item[0]" />
-          <van-index-anchor index="N" />
-          <van-cell :title="item[0]" v-for="item in cityArr.N" :key="item[0]" />
-          <van-index-anchor index="O" />
-          <van-cell :title="item[0]" v-for="item in cityArr.O" :key="item[0]" />
-          <van-index-anchor index="P" />
-          <van-cell :title="item[0]" v-for="item in cityArr.P" :key="item[0]" />
-          <van-index-anchor index="Q" />
-          <van-cell :title="item[0]" v-for="item in cityArr.Q" :key="item[0]" />
-          <van-index-anchor index="R" />
-          <van-cell :title="item[0]" v-for="item in cityArr.R" :key="item[0]" />
-          <van-index-anchor index="S" />
-          <van-cell :title="item[0]" v-for="item in cityArr.S" :key="item[0]" />
-          <van-index-anchor index="T" />
-          <van-cell :title="item[0]" v-for="item in cityArr.T" :key="item[0]" />
-          <van-index-anchor index="U" />
-          <van-cell :title="item[0]" v-for="item in cityArr.U" :key="item[0]" />
-          <van-index-anchor index="W" />
-          <van-cell :title="item[0]" v-for="item in cityArr.W" :key="item[0]" />
-          <van-index-anchor index="X" />
-          <van-cell :title="item[0]" v-for="item in cityArr.X" :key="item[0]" />
-          <van-index-anchor index="Y" />
-          <van-cell :title="item[0]" v-for="item in cityArr.Y" :key="item[0]" />
-          <van-index-anchor index="Z" />
-          <van-cell :title="item[0]" v-for="item in cityArr.Z" :key="item[0]" />
-        </van-index-bar>
-      </van-dropdown-item>
-      <van-dropdown-item v-model="value" :options="option">
-        <van-index-bar>
-          <template>
-            <van-index-anchor index="A">标题</van-index-anchor>
-            <van-cell title="文本" />
-            <van-cell title="文本" />
-            <van-cell title="文本" />
+          <template v-for="item in needArr">
+            <van-index-anchor :index="item.key" :key="item.id" />
+            <van-cell
+              v-for="c in item.children"
+              :title="c[0]"
+              :key="c[0]"
+              @click="changeCity(c[0])"
+            />
           </template>
         </van-index-bar>
       </van-dropdown-item>
+
+      <!-- <van-dropdown-item title="A" ref="item2">
+        <van-index-bar>
+          <template v-for="item in positionArr">
+            <van-cell
+              v-for="c in item.children"
+              :title="c[1]"
+              :key="c"
+            />
+          </template>
+        </van-index-bar>
+      </van-dropdown-item> -->
     </van-dropdown-menu>
     <h3>工资收入</h3>
     <div class="charts" ref="charts"></div>
@@ -116,14 +73,36 @@ export default {
         { text: '深圳', value: 1 }
       ],
       hotArr: [],
-      cityArr: []
+      cityArr: [],
+      needArr: [], // 转换后的数组
+      city: '北京', // 当前选择的城市
+      positionArr: [] // 岗位
     }
   },
-  methods: {},
+  methods: {
+    changeCity (c) {
+      this.city = c
+      this.$refs.item.toggle()
+    }
+  },
   async created () {
     const res = await dataIndexes()
     this.cityArr = res.data
     this.hotArr = res.data['热门']
+    let id = 0
+    for (const [key, value] of Object.entries(this.cityArr)) {
+      // console.log(key) // 热门
+      // console.log(value) // [['北京'], ['广州'], ['深圳']]
+      this.needArr.push({
+        id,
+        key,
+        children: value
+      })
+      this.positionArr.push({
+        children: value
+      })
+      id++
+    }
   },
   mounted () {
     const myChart = echarts.init(this.$refs.charts) // 初始化实例
@@ -175,7 +154,6 @@ export default {
 
 <style lang="scss" scoped>
 .data {
-
   .charts {
     width: 100vw;
     height: 200px;

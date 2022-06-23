@@ -21,10 +21,10 @@
     <div class="inp">
       <van-field v-model="value" placeholder="我来补充两句" @keyup.enter="send" />
       <div class="right">
-        <div class="collect">
-          <van-icon name="star-o" />{{ detail.collect }}
+        <div class="collect" @click="handleCollect">
+          <van-icon name="star-o" ref="collect" />{{ detail.collect }}
         </div>
-        <div class="like"><van-icon name="good-job-o" />{{ detail.star }}</div>
+        <div class="like" @click="handleStar"><van-icon name="good-job-o" ref="star" />{{ detail.star }}</div>
         <div class="share">
           <van-icon name="share-o" />{{ detail.share || 0 }}
         </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { articlesShareDetail, setarticlesComments } from '@/api/articles'
+import { articlesCollect, articlesShareDetail, articlesStar, setarticlesComments } from '@/api/articles'
 import Comment from './Comment'
 
 export default {
@@ -50,15 +50,37 @@ export default {
     }
   },
   async created () {
-    const res = await articlesShareDetail(this.id)
-    this.detail = res.data
+    this.load()
   },
   methods: {
+    async load () {
+      const res = await articlesShareDetail(this.id)
+      this.detail = res.data
+    },
     async send () {
-      const res = await setarticlesComments({
+      await setarticlesComments({
         content: this.value,
         article: this.id
       })
+      // console.log(res)
+      this.value = ''
+      this.load()
+    },
+    async handleCollect () {
+      await articlesCollect({
+        id: this.id
+      })
+      this.$toast.success('收藏成功')
+      this.$refs.collect.style.color = 'red'
+      this.load()
+    },
+    async handleStar () {
+      await articlesStar({
+        article: this.id
+      })
+      this.$toast.success('点赞成功')
+      this.$refs.star.style.color = 'red'
+      this.load()
     }
   }
 }
