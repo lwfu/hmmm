@@ -6,6 +6,7 @@ import store from './store'
 import '@/styles/base.scss'   // 全局样式
 import '@/plugins/vant'       // vant组件
 import '@/permission'         // 路由守卫
+import '@/assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false
 

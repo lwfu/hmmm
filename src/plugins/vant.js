@@ -24,7 +24,17 @@ import {
   TabbarItem,
   Tabs,
   Toast,
-  Uploader
+  Uploader,
+  DropdownMenu,
+  DropdownItem,
+  Circle,
+  IndexBar,
+  IndexAnchor,
+  GoodsAction,
+  GoodsActionButton,
+  GoodsActionIcon,
+  Loading,
+  Tag
 } from 'vant'
 
 Vue.use(Button)
@@ -51,3 +61,13 @@ Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(Search)
 Vue.use(Image)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Circle)
+Vue.use(IndexBar)
+Vue.use(IndexAnchor)
+Vue.use(GoodsAction)
+Vue.use(GoodsActionButton)
+Vue.use(GoodsActionIcon)
+Vue.use(Loading)
+Vue.use(Tag)

@@ -56,6 +56,15 @@ const routes = [
         }
       }
     ]
+  },
+
+  {
+    path: '/interview/:questionId/:city',
+    name: 'Interview',
+    component: () => import('@/views/interview/index.vue'),
+    meta: {
+      title: '模拟面试'
+    }
   }
 ]
 

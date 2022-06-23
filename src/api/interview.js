@@ -11,6 +11,7 @@ export const interviewFilters = () => {
 export const interviewQuestions = params => {
   return request({
     url: '/interview/questions',
-    params
+    params,
+    needCancel: true
   })
 }
