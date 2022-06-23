@@ -10,7 +10,9 @@ export const dataHot = () => {
   })
 }
 
-// 接口：城市索引
+/**
+ * @description: 城市索引
+ */
 export const dataIndexes = () => {
   return request({
     url: '/chart-data/indexes'

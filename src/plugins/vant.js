@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { 
+import {
   ActionSheet,
   Button,
   Cell,
@@ -24,7 +24,12 @@ import {
   TabbarItem,
   Tabs,
   Toast,
-  Uploader
+  Uploader,
+  DropdownMenu,
+  DropdownItem,
+  IndexBar,
+  IndexAnchor,
+  Switch
 } from 'vant'
 
 Vue.use(Button)
@@ -51,3 +56,8 @@ Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(Search)
 Vue.use(Image)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Switch)
+Vue.use(IndexBar)
+Vue.use(IndexAnchor)

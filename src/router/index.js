@@ -81,6 +81,15 @@ const routes = [
         }
       },
       {
+        path: 'marketdata',
+        name: 'marketdata',
+        component: () => import('@/views/find/components/MarketDate.vue'),
+        meta: {
+          title: '市场数据',
+          noTabbar: true
+        }
+      },
+      {
         path: 'my',
         name: 'my',
         component: () => import('@/views/my/index.vue'),

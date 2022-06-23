@@ -41,6 +41,7 @@
         title="市场数据"
         is-link
         value="查看更多"
+        :to="{ name: 'marketdata' }"
       />
       <div class="tags">
         <span>{{ hot.city }}</span>
@@ -151,7 +152,6 @@ export default {
     // 市场数据
     const res2 = await dataHot()
     this.hot = res2.data
-    console.log(res2)
     this.hotArr = res2.data.yearSalary.reverse()
 
     // 分享
