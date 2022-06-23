@@ -6,7 +6,7 @@ export const auCode = data => {
     url: '/au/code',
     method: 'POST',
     data,
-    needToken: false
+    noToken: true
   })
 }
 
@@ -16,7 +16,7 @@ export const auLogin = data => {
     url: '/au/login',
     method: 'POST',
     data,
-    needToken: false
+    noToken: true
   })
 }
 
@@ -36,7 +36,7 @@ export const auEdit = data => {
   })
 }
 
-// 接口：修改用户信息
+// 接口：文件上传
 export const upLoad = data => {
   return request({
     url: '/upload',

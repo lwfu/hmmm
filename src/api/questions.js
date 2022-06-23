@@ -17,10 +17,11 @@ export const questionsCompany = params => {
 }
 
 // 接口：提交试题
-export const questionsSubmit = params => {
+export const questionsSubmit = data => {
   return request({
     url: '/questions/submit',
-    params
+    method: 'POST',
+    data
   })
 }
 
