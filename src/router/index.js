@@ -62,7 +62,15 @@ const routes = [
         meta: {
           needLogin: true
         }
-      }
+      },
+      {
+        path: 'photo',
+        // 路由懒加载
+        component: () => import('../views/my/photo.vue'),
+        meta: {
+          needLogin: true
+        }
+      },
     ]
   }
 ]

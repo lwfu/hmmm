@@ -7,10 +7,14 @@
         <p>{{ userInfo.intro }}</p>
       </div>
       <div class="img">
-        <img @click="goEdit" :src="userInfo.avatar" alt="" />
+        <img
+          @click="goEdit"
+          :src="`http://hmmm.zllhyy.cn${userInfo.avatar}`"
+          alt=""
+        />
       </div>
     </div>
-    x
+
     <!-- 累计答题 -->
     <div class="text-box">
       <div class="text-box1">
@@ -70,8 +74,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import {} from "../../api/questions";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -79,7 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapState(["userInfo"]),
   },
   created() {
     // this.getData();

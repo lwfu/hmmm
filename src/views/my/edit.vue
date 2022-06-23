@@ -5,13 +5,13 @@
       title="编辑资料"
       left-arrow
       @click-left="$router.push('/my')"
-    />
+    ></van-nav-bar>
     <div>
       <!-- 头像区域 -->
-      <div class="avatar-box">
+      <div @click="$router.push('/photo')" class="avatar-box">
         <p>头像</p>
         <div class="imss">
-          <van-image src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+          <img :src="pic" />
         </div>
       </div>
 
@@ -24,11 +24,16 @@
           is-link
           @click="genderShow = true"
         />
-        <van-cell title="地区" value="上海" is-link />
-        <van-cell title="个人简历" value="11" is-link />
+        <van-cell title="地区" :value="area" is-link @click="areaShow = true" />
+        <van-cell
+          title="个人简历"
+          @click="resumeShow = true"
+          :value="intro"
+          is-link
+        />
       </van-cell-group>
     </div>
-    <div class="exit"><van-button>退出登录</van-button></div>
+    <div class="exit"><van-button @click="exitLout">退出登录</van-button></div>
 
     <!-- 修改姓名 -->
     <van-popup v-model="nameShow">
@@ -38,9 +43,6 @@
       <van-button @click="xiugai">确认</van-button>
     </van-popup>
     <!-- 修改性别 -->
-    
-    <!-- 性别 修改的布局 -->
-    <!-- position="bottom" 底部弹出 -->
     <div class="popupShow">
       <van-popup v-model="genderShow" position="bottom">
         <van-nav-bar
@@ -52,25 +54,20 @@
         <van-cell title="女" @click="genderSubmit(0)"></van-cell>
       </van-popup>
     </div>
-
-   <div>
-    <van-dropdown-menu>
-      <van-dropdown-item>
-     <van-index-bar :index-list="indexList">
-  <van-index-anchor index="1">标题1</van-index-anchor>
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-
-  <van-index-anchor index="2">标题2</van-index-anchor>
-  <van-cell title="文本" />
-       <van-cell title="文本" />
-     <van-cell title="文本" />
-
-     </van-index-bar>
-      </van-dropdown-item>
-    </vdropdown-menu>
-   </div>
+    <!-- 修改地区 -->
+    <van-popup v-model="areaShow">
+      <h1>修改地区</h1>
+      <van-field v-model="area" />
+      <van-button @click="areaShow = false">取消</van-button>
+      <van-button @click="areaEdit">确认</van-button>
+    </van-popup>
+    <!-- 修改个人简历 -->
+    <van-popup v-model="resumeShow">
+      <h1>个人简历</h1>
+      <van-field v-model="intro" />
+      <van-button @click="resumeShow = false">取消</van-button>
+      <van-button @click="resume">确认</van-button>
+    </van-popup>
   </div>
 </template>
 
@@ -86,11 +83,16 @@ export default {
       // 修改性别
       genderShow: false,
       // 修改地区
-      indexList: [],
+      area: this.$store.state.userInfo.area,
+      areaShow: false,
+      // 修改个人简历
+      intro: this.$store.state.userInfo.intro,
+      resumeShow: false,
+      pic: this.userInfo ? `http://hmmm.zllhyy.cn${this.userInfo.avatar}` : "",
     };
   },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo", "photo"]),
   },
   methods: {
     // 修改姓名
@@ -129,6 +131,52 @@ export default {
       // 关闭弹窗
       this.genderShow = false;
     },
+    // 修改地区
+    async areaEdit() {
+      if (this.area === "" || this.area === this.userInfo.area) {
+        this.$toast.fail("请修改后再提交");
+        return;
+      }
+      await auEdit({
+        area: this.area,
+      });
+      this.$toast.success("修改成功");
+      // 关闭弹窗
+      this.areaShow = false;
+      // 刷新用户信息
+      this.$store.commit("SET_USERINFO", {
+        ...this.userInfo,
+        area: this.area,
+      });
+    },
+    // 修改个人简历
+    async resume() {
+      if (this.intro === "" || this.intro === this.userInfo.intro) {
+        this.$toast.fail("请修改后再提交");
+        return;
+      }
+      await auEdit({
+        intro: this.intro,
+      });
+      this.$toast.success("修改成功");
+      // 关闭弹窗
+      this.resumeShow = false;
+      // 刷新用户信息
+      this.$store.commit("SET_USERINFO", {
+        ...this.userInfo,
+        intro: this.intro,
+      });
+    },
+
+    // 退出登录
+    exitLout() {
+      console.log(1);
+      this.$store.commit("LOGOUT");
+      this.$toast.success("退出登录");
+    },
+  },
+  created() {
+    this.pic = this.$store.getters.photo;
   },
 };
 </script>
@@ -140,9 +188,10 @@ export default {
   height: 60px;
   margin: 0 15px;
   line-height: 60px;
-  .van-image {
+  .imss img {
     width: 60px;
     height: 60px;
+    border-radius: 50%;
   }
 }
 .exit .van-button {

@@ -40,10 +40,15 @@ export const auEdit = data => {
 }
 
 // 接口：文件上传
-export const upLoad = data => {
+export const upLoad = avatar => {
+  const _data = new FormData()
+  _data.append('files', avatar)
   return request({
     url: '/upload',
     method: 'POST',
-    data
+    data: _data,
+    headers: {
+      authorization: 'Bearer ' + store.state.token
+    }
   })
 }
