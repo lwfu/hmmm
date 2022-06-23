@@ -11,7 +11,7 @@
         </div>
         <div class="info">
           <p>{{ detail.author.nickname }}</p>
-          <p>{{ detail.created_at }}</p>
+          <p>{{ detail.updated_at | formatTime }}</p>
         </div>
       </div>
       <div v-html="detail.content"></div>

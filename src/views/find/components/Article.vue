@@ -4,7 +4,7 @@
       <div class="left">
         <h3>{{ l.title }}</h3>
         <div class="time">
-          <p>{{ l.created_at }}</p>
+          <p>{{ l.updated_at | formatTime }}</p>
           <p>
             <span><van-icon name="eye-o" />{{ l.read }}</span>
             <span><van-icon name="good-job-o" />{{ l.star }}</span>

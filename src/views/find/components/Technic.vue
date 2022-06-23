@@ -6,7 +6,7 @@
         <h2>{{ technic.title }}</h2>
       </header>
       <div class="time">
-        <span>{{ technic.updated_at }}</span>
+        <span>{{ technic.updated_at | formatTime }}</span>
         <div class="info">
           <span><van-icon name="eye-o" />{{ technic.read }}</span>
           <span><van-icon name="good-job-o" />{{ technic.star }}</span>

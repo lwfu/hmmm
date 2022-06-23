@@ -14,7 +14,7 @@
             <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
             {{ item.author.nickname }}
           </span>
-          <span>{{ item.updated_at }}</span>
+          <span>{{ item.updated_at | formatTime }}</span>
           <span class="comment">
             <van-icon name="comment-o" />{{ item.article_comments }}
           </span>
