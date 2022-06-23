@@ -28,7 +28,6 @@ const routes = [
           title: '公司'
         }
       },
-      
       {
         path: 'question',
         name: 'question',
@@ -56,6 +55,11 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/details',
+    name: 'details',
+    component: () => import('@/views/company/compoents/details.vue')
   }
 ]
 

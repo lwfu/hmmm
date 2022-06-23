@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { 
+import {
   ActionSheet,
   Button,
   Cell,
@@ -24,7 +24,10 @@ import {
   TabbarItem,
   Tabs,
   Toast,
-  Uploader
+  Uploader,
+  Tag,
+  Rate,
+  Loading
 } from 'vant'
 
 Vue.use(Button)
@@ -51,3 +54,6 @@ Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(Search)
 Vue.use(Image)
+Vue.use(Tag)
+Vue.use(Rate)
+Vue.use(Loading)
