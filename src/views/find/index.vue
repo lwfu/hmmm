@@ -2,117 +2,122 @@
   <div v-if="list.length" class="find">
     <van-nav-bar title="发现" fixed placeholder />
     <div class="border"></div>
-    <!-- 面试技巧 -->
-    <div class="content">
-      <van-cell
-        size="large"
-        :title-class="['title']"
-        title="面试技巧"
-        is-link
-        value="查看更多"
-        :to="{ name: 'findlist' }"
-      />
-      <div
-        class="article"
-        v-for="l in list"
-        :key="l.id"
-        @click="goTechnic(l.id)"
-      >
-        <div class="left">
-          <h3>{{ l.title }}</h3>
-          <div class="time">
-            <p>{{ l.updated_at | formatTime }}</p>
-            <p>
-              <span><van-icon name="eye-o" />{{ l.read }}</span>
-              <span><van-icon name="good-job-o" />{{ l.star }}</span>
-            </p>
-          </div>
-        </div>
-        <div class="right">
-          <img :src="`http://hmmm.zllhyy.cn${l.cover}`" alt="" />
-        </div>
-      </div>
-    </div>
-    <!-- 市场数据 -->
-    <div class="market">
-      <van-cell
-        size="large"
-        :title-class="['title']"
-        title="市场数据"
-        is-link
-        value="查看更多"
-        :to="{ name: 'marketdata' }"
-      />
-      <div class="tags">
-        <span>{{ hot.city }}</span>
-        <span>{{ hot.position }}</span>
-      </div>
-      <div class="items">
-        <div class="item" v-for="(item, index) in showMoreList" :key="index">
-          <div class="left">{{ item.year }}</div>
-          <div class="center">
-            <div
-              class="inner"
-              :style="{ width: `${(item.salary / hot.topSalary) * 100}%` }"
-            >
-              ￥{{ item.salary }}
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <!-- 面试技巧 -->
+      <div class="content">
+        <van-cell
+          size="large"
+          :title-class="['title']"
+          title="面试技巧"
+          is-link
+          value="查看更多"
+          :to="{ name: 'findlist' }"
+        />
+        <div
+          class="article"
+          v-for="l in list"
+          :key="l.id"
+          @click="goTechnic(l.id)"
+        >
+          <div class="left">
+            <h3>{{ l.title }}</h3>
+            <div class="time">
+              <p>{{ l.updated_at | formatTime }}</p>
+              <p>
+                <span><van-icon name="eye-o" />{{ l.read }}</span>
+                <span><van-icon name="good-job-o" />{{ l.star }}</span>
+              </p>
             </div>
           </div>
           <div class="right">
-            <img
-              :src="
-                item.percent > 0
-                  ? 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/7c58537d-1645-4fec-bd33-7bec566f1a69.3750B820-E5FA-476B-82CE-6E05E71FF960.png'
-                  : 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/f3055e32-9e30-4f43-bfc7-c90397dc4d64.B24FA884-A8D1-4B8B-BB9A-0688CAECF085.png'
-              "
-              alt=""
-            />
-            {{ item.percent }}%
+            <img :src="`http://hmmm.zllhyy.cn${l.cover}`" alt="" />
           </div>
         </div>
       </div>
-      <div class="more" @click="handleMore">
-        {{ isMore ? '收起' : '展开更多' }}
-        <span v-show="!isMore"><van-icon name="arrow-down"/></span>
-        <span v-show="isMore"><van-icon name="arrow-up"/></span>
-      </div>
-    </div>
-    <!-- 面经分享 -->
-    <div class="share">
-      <van-cell
-        size="large"
-        :title-class="['title']"
-        title="面经分享"
-        is-link
-        value="查看更多"
-        :to="{ name: 'sharelist' }"
-      />
-      <div class="s-items">
-        <div
-          class="s-item"
-          v-for="item in article"
-          :key="item.id"
-          @click="goShareDetail(item.id)"
-        >
-          <div class="title">{{ item.title }}</div>
-          <div class="middle">{{ item.content }}</div>
-          <div class="bottom">
-            <span class="avatar">
-              <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
-              {{ item.author.nickname }}
-            </span>
-            <span>{{ item.updated_at | formatTime }}</span>
-            <span class="comment">
-              <van-icon name="comment-o" />{{ item.article_comments }}
-            </span>
-            <span class="like">
-              <van-icon name="thumb-circle-o" />{{ item.star }}
-            </span>
+      <!-- 市场数据 -->
+      <div class="market">
+        <van-cell
+          size="large"
+          :title-class="['title']"
+          title="市场数据"
+          is-link
+          value="查看更多"
+          :to="{ name: 'marketdata' }"
+        />
+        <div class="tags">
+          <span>{{ hot.city }}</span>
+          <span>{{ hot.position }}</span>
+        </div>
+        <div class="items">
+          <div class="item" v-for="(item, index) in showMoreList" :key="index">
+            <div class="left">{{ item.year }}</div>
+            <div class="center">
+              <div
+                class="inner"
+                :style="{ width: `${(item.salary / hot.topSalary) * 100}%` }"
+              >
+                ￥{{ item.salary }}
+              </div>
+            </div>
+            <div class="right">
+              <img
+                :src="
+                  item.percent > 0
+                    ? 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/7c58537d-1645-4fec-bd33-7bec566f1a69.3750B820-E5FA-476B-82CE-6E05E71FF960.png'
+                    : 'https://img02.mockplus.cn/idoc/sketch/2020-09-10/f3055e32-9e30-4f43-bfc7-c90397dc4d64.B24FA884-A8D1-4B8B-BB9A-0688CAECF085.png'
+                "
+                alt=""
+              />
+              {{ item.percent }}%
+            </div>
           </div>
-          <van-divider />
+        </div>
+        <div class="more" @click="handleMore">
+          {{ isMore ? '收起' : '展开更多' }}
+          <span v-show="!isMore"><van-icon name="arrow-down"/></span>
+          <span v-show="isMore"><van-icon name="arrow-up"/></span>
         </div>
       </div>
-    </div>
+      <!-- 面经分享 -->
+      <div class="share">
+        <van-cell
+          size="large"
+          :title-class="['title']"
+          title="面经分享"
+          is-link
+          value="查看更多"
+          :to="{ name: 'sharelist' }"
+        />
+        <div class="s-items">
+          <div
+            class="s-item"
+            v-for="item in article"
+            :key="item.id"
+            @click="goShareDetail(item.id)"
+          >
+            <div class="title">{{ item.title }}</div>
+            <div class="middle">{{ item.content }}</div>
+            <div class="bottom">
+              <span class="avatar">
+                <img
+                  :src="`http://hmmm.zllhyy.cn${item.author.avatar}`"
+                  alt=""
+                />
+                {{ item.author.nickname }}
+              </span>
+              <span>{{ item.updated_at | formatTime }}</span>
+              <span class="comment">
+                <van-icon name="comment-o" />{{ item.article_comments }}
+              </span>
+              <span class="like">
+                <van-icon name="thumb-circle-o" />{{ item.star }}
+              </span>
+            </div>
+            <van-divider />
+          </div>
+        </div>
+      </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -127,7 +132,8 @@ export default {
       hot: {}, // 市场数据
       article: [], // 分享
       hotArr: [], // 工资数组
-      isMore: false // 是否展开更多
+      isMore: false, // 是否展开更多
+      isLoading: false
     }
   },
   computed: {
@@ -143,26 +149,29 @@ export default {
     }
   },
   async created () {
-    // 面试技巧
-    const res = await articlesTechnic({
-      start: 0,
-      limit: 3
-    })
-    this.list = res.data.list
-    // 市场数据
-    const res2 = await dataHot()
-    this.hot = res2.data
-    this.hotArr = res2.data.yearSalary.reverse()
-
-    // 分享
-    const res3 = await articlesShare({
-      start: 0,
-      limit: 3
-    })
-
-    this.article = res3.data.list
+    this.loadData()
   },
   methods: {
+    async loadData () {
+      // 面试技巧
+      const res = await articlesTechnic({
+        start: 0,
+        limit: 3
+      })
+      this.list = res.data.list
+      // 市场数据
+      const res2 = await dataHot()
+      this.hot = res2.data
+      this.hotArr = res2.data.yearSalary.reverse()
+
+      // 分享
+      const res3 = await articlesShare({
+        start: 0,
+        limit: 3
+      })
+
+      this.article = res3.data.list
+    },
     handleMore () {
       this.isMore = !this.isMore
     },
@@ -181,6 +190,10 @@ export default {
           id
         }
       })
+    },
+    onRefresh () {
+      this.loadData()
+      this.isLoading = false
     }
   }
 }

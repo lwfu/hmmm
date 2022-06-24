@@ -24,18 +24,23 @@ export default {
   name: 'Article',
   data () {
     return {
-      list: []
+      list: [],
+      isLoading: false,
+      start: 0
     }
   },
   async created () {
-    // 面试技巧
-    const res = await articlesTechnic({
-      start: 0,
-      limit: 5
-    })
-    this.list = res.data.list
+    await this.loadData()
   },
   methods: {
+    async loadData () {
+      // 面试技巧
+      const res = await articlesTechnic({
+        start: this.start,
+        limit: 10
+      })
+      this.list = res.data.list
+    },
     goTechnic (id) {
       this.$router.push({
         name: 'technic',
@@ -43,6 +48,11 @@ export default {
           id
         }
       })
+    },
+    async onRefresh () {
+      this.isLoading = false
+      this.start = 0
+      await this.loadData()
     }
   }
 }

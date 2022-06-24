@@ -16,7 +16,8 @@ export const dataHot = () => {
  */
 export const dataIndexes = () => {
   return request({
-    url: '/chart-data/indexes'
+    url: '/chart-data/indexes',
+    noToken: true
   })
 }
 

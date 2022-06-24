@@ -1,30 +1,32 @@
 <template>
   <div class="share-article">
-    <div class="s-items">
-      <div
-        class="s-item"
-        v-for="item in shareList"
-        :key="item.id"
-        @click="goShareDetail(item.id)"
-      >
-        <div class="title">{{ item.title }}</div>
-        <div class="middle">{{ item.content }}</div>
-        <div class="bottom">
-          <span class="avatar">
-            <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
-            {{ item.author.nickname }}
-          </span>
-          <span>{{ item.updated_at | formatTime }}</span>
-          <span class="comment">
-            <van-icon name="comment-o" />{{ item.article_comments }}
-          </span>
-          <span class="like">
-            <van-icon name="thumb-circle-o" />{{ item.star }}
-          </span>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <div class="s-items">
+        <div
+          class="s-item"
+          v-for="item in shareList"
+          :key="item.id"
+          @click="goShareDetail(item.id)"
+        >
+          <div class="title">{{ item.title }}</div>
+          <div class="middle">{{ item.content }}</div>
+          <div class="bottom">
+            <span class="avatar">
+              <img :src="`http://hmmm.zllhyy.cn${item.author.avatar}`" alt="" />
+              {{ item.author.nickname }}
+            </span>
+            <span>{{ item.updated_at | formatTime }}</span>
+            <span class="comment">
+              <van-icon name="comment-o" />{{ item.article_comments }}
+            </span>
+            <span class="like">
+              <van-icon name="thumb-circle-o" />{{ item.star }}
+            </span>
+          </div>
+          <van-divider />
         </div>
-        <van-divider />
       </div>
-    </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -35,17 +37,22 @@ export default {
   name: 'ShareArticle',
   data () {
     return {
-      shareList: []
+      shareList: [],
+      isLoading: false,
+      start: 0
     }
   },
   async created () {
-    const res3 = await articlesShare({
-      start: 0,
-      limit: 5
-    })
-    this.shareList = res3.data.list
+    await this.loadData()
   },
   methods: {
+    async loadData () {
+      const res3 = await articlesShare({
+        start: this.start,
+        limit: 10
+      })
+      this.shareList = res3.data.list
+    },
     goShareDetail (id) {
       this.$router.push({
         name: 'sharedetail',
@@ -53,6 +60,11 @@ export default {
           id
         }
       })
+    },
+    onRefresh () {
+      this.start++
+      this.loadData()
+      this.isLoading = false
     }
   }
 }

@@ -90,6 +90,24 @@ const routes = [
         }
       },
       {
+        path: 'sharesearch',
+        name: 'sharesearch',
+        component: () => import('@/views/find/components/ShareSearch.vue'),
+        meta: {
+          title: '面经热搜',
+          noTabbar: true
+        }
+      },
+      {
+        path: 'technicsearch',
+        name: 'technicsearch',
+        component: () => import('@/views/find/components/TechnicSearch.vue'),
+        meta: {
+          title: '面试技巧搜索',
+          noTabbar: true
+        }
+      },
+      {
         path: 'my',
         name: 'my',
         component: () => import('@/views/my/index.vue'),
@@ -114,7 +132,7 @@ const routes = [
           title: '修改头像',
           noTabbar: true
         }
-      },
+      }
     ]
   },
 

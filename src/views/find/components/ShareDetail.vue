@@ -21,54 +21,95 @@
       </div>
       <div v-html="detail.content"></div>
     </div>
-    <Comment :id="$route.params.id"></Comment>
+    <Comment :id="$route.params.id" v-if="show"></Comment>
     <!-- 输入框 -->
     <div class="inp">
       <van-field v-model="value" placeholder="我来补充两句" @keyup.enter="send" />
       <div class="right">
-        <div class="collect">
-          <van-icon name="star-o" />{{ detail.collect }}
+        <div class="collect" @click="handleCollect">
+          <van-icon name="star-o" ref="collect" />{{ detail.collect }}
         </div>
-        <div class="like"><van-icon name="good-job-o" />{{ detail.star }}</div>
-        <div class="share">
-          <van-icon name="share-o" />{{ detail.share || 0 }}
+        <div class="like" @click="handleStar"><van-icon name="good-job-o" ref="star" />{{ detail.star }}</div>
+        <div class="share" @click="shareArticle">
+          <van-icon name="share-o"  />{{ detail.share || 0 }}
         </div>
       </div>
     </div>
+    <!-- 分享弹出层 -->
+    <sharePop v-model="showShare" :detail="detail1" />
   </div>
 </template>
 
 <script>
-import { articlesShareDetail, setarticlesComments } from '@/api/articles'
+import { articlesCollect, articlesShareDetail, articlesStar, setarticlesComments, shareImg } from '@/api/articles'
 import Comment from './Comment'
+import sharePop from './sharePop.vue'
 
 export default {
   name: 'ShareDetail',
-  components: { Comment },
+  components: { Comment, sharePop },
   data () {
     return {
       detail: {
         author: {}
       },
+      show: true,
       value: '', // 输入框内容
+      showShare: false,
+      detail1: {
+        star: 0,
+        collect: 0
+      },
       id: this.$route.params.id // 文章id
     }
   },
   async created () {
-    const res = await articlesShareDetail(this.id)
-    let content = res.data.content
-    content = content.replaceAll('http://47.106.228.28:1337', 'http://hmmm.zllhyy.cn/')
-    this.detail = {
-      ...res.data,
-      content
-    }
+    this.load()
   },
   methods: {
+    async load () {
+      const res = await articlesShareDetail(this.id)
+      let content = res.data.content
+      content = content.replaceAll('http://47.106.228.28:1337', 'http://hmmm.zllhyy.cn/')
+      this.detail = {
+        ...res.data,
+        content
+      }
+    },
     async send () {
-      const res = await setarticlesComments({
+      await setarticlesComments({
         content: this.value,
         article: this.id
       })
+      // console.log(res)
+      await this.load()
+      this.show = false
+      await this.$nextTick()
+      this.show = true
+      this.value = ''
+    },
+    async handleCollect () {
+      await articlesCollect({
+        id: this.id
+      })
+      await this.load()
+      this.$toast.success('收藏成功')
+      this.$refs.collect.style.color = 'red'
+    },
+    async handleStar () {
+      await articlesStar({
+        article: this.id
+      })
+      this.$toast.success('点赞成功')
+      this.$refs.star.style.color = 'red'
+      this.load()
+    },
+    async shareArticle () {
+      // 滚到顶部
+      window.scrollTo(0, 0)
+      this.showShare = true
+      const shareRes = await shareImg({ id: this.id })
+      this.detail.share = shareRes.data.share
     }
   }
 }

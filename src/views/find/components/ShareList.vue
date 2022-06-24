@@ -12,6 +12,7 @@
       placeholder="请输入搜索关键词"
       input-align="center"
       shape="round"
+      @click="$router.push({ name: 'sharesearch' })"
     />
     <div class="border"></div>
     <ShareArticle></ShareArticle>
