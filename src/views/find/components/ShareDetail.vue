@@ -16,7 +16,7 @@
       </div>
       <div v-html="detail.content"></div>
     </div>
-    <Comment :id="$route.params.id"></Comment>
+    <Comment :id="$route.params.id" v-if="show"></Comment>
     <!-- 输入框 -->
     <div class="inp">
       <van-field v-model="value" placeholder="我来补充两句" @keyup.enter="send" />
@@ -45,6 +45,7 @@ export default {
       detail: {
         author: {}
       },
+      show: true,
       value: '', // 输入框内容
       id: this.$route.params.id // 文章id
     }
@@ -63,16 +64,19 @@ export default {
         article: this.id
       })
       // console.log(res)
+      await this.load()
+      this.show = false
+      await this.$nextTick()
+      this.show = true
       this.value = ''
-      this.load()
     },
     async handleCollect () {
       await articlesCollect({
         id: this.id
       })
+      await this.load()
       this.$toast.success('收藏成功')
       this.$refs.collect.style.color = 'red'
-      this.load()
     },
     async handleStar () {
       await articlesStar({

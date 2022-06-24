@@ -8,31 +8,44 @@
       @click-left="$router.go(-1)"
     />
     <van-dropdown-menu>
-      <van-dropdown-item :title="city" ref="item">
+      <van-dropdown-item :title="selectCity" ref="cityDrop">
+        <van-search
+          shape="round"
+          v-model="cityQuery"
+          placeholder="请输入搜索关键词"
+        />
+        <!-- 索引列 -->
         <van-index-bar>
-          <template v-for="item in needArr">
-            <van-index-anchor :index="item.key" :key="item.id" />
+          <template v-for="(citys, key) in indexData">
+            <van-index-anchor :index="key" :key="key" />
             <van-cell
-              v-for="c in item.children"
-              :title="c[0]"
-              :key="c[0]"
-              @click="changeCity(c[0])"
+              v-for="it in citys"
+              :title="it[0]"
+              @click="selectedCity(it)"
+              :key="it[0]"
             />
           </template>
         </van-index-bar>
       </van-dropdown-item>
-
-      <!-- <van-dropdown-item title="A" ref="item2">
-        <van-index-bar>
-          <template v-for="item in positionArr">
-            <van-cell
-              v-for="c in item.children"
-              :title="c[1]"
-              :key="c"
-            />
-          </template>
-        </van-index-bar>
-      </van-dropdown-item> -->
+      <van-dropdown-item
+        :title="selectPosition"
+        v-model="selectPosition"
+        ref="positionDrop"
+      >
+        <div class="list">
+          <van-search
+            shape="round"
+            v-model="positionQuery"
+            placeholder="请输入搜索关键词"
+          />
+          <van-cell
+            v-for="item in positions"
+            :title="item"
+            @click="selectedPosition(item)"
+            :key="item"
+          />
+        </div>
+      </van-dropdown-item>
     </van-dropdown-menu>
     <h3>工资收入</h3>
     <div class="charts" ref="charts"></div>
@@ -76,33 +89,88 @@ export default {
       cityArr: [],
       needArr: [], // 转换后的数组
       city: '北京', // 当前选择的城市
-      positionArr: [] // 岗位
+      positionArr: [], // 岗位
+
+      showPop: false, // 是否显示弹出层
+      showCity: false, // 是否显示列表
+      cityData: '', // 城市索引数据
+      positionData: [], // 职位列表
+      cityQuery: '', // 城市检索
+      selectCity: '', // 选择的城市
+      selectPosition: '', // 选择的职位
+      positionQuery: '', // 职位检索
+      indexData: '', // 索引数据
+      percentSalary: '', // 工资收入百分比
+      percentSample: 0 // 百分比分布样本个数
+    }
+  },
+  computed: {
+    // 城市搜索
+    citys () {
+      const temCity = {}
+
+      for (const key in this.cityData) {
+        const filterCitys = this.cityData[key].filter(v => {
+          return v.includes(this.cityQuery)
+        })
+        if (filterCitys.length > 0) {
+          temCity[key] = filterCitys
+        }
+      }
+      return temCity
+    },
+    positions () {
+      const filterPositions = this.positionData.filter(v => {
+        return v.includes(this.positionQuery)
+      })
+
+      return filterPositions
     }
   },
   methods: {
     changeCity (c) {
       this.city = c
       this.$refs.item.toggle()
+    },
+    async selectedPosition (position) {
+      this.selectPosition = position
+      this.$refs.positionDrop.toggle()
+    },
+    async selectedCity (cityData) {
+      this.selectCity = cityData[0]
+      this.$refs.cityDrop.toggle()
+      this.positionData = cityData[1]
+      this.selectPosition = this.positionData[0]
     }
   },
   async created () {
-    const res = await dataIndexes()
-    this.cityArr = res.data
-    this.hotArr = res.data['热门']
-    let id = 0
-    for (const [key, value] of Object.entries(this.cityArr)) {
-      // console.log(key) // 热门
-      // console.log(value) // [['北京'], ['广州'], ['深圳']]
-      this.needArr.push({
-        id,
-        key,
-        children: value
-      })
-      this.positionArr.push({
-        children: value
-      })
-      id++
-    }
+    // const res = await dataIndexes()
+    // this.cityArr = res.data
+    // this.hotArr = res.data['热门']
+    // let id = 0
+    // for (const [key, value] of Object.entries(this.cityArr)) {
+    //   // console.log(key) // 热门
+    //   // console.log(value) // [['北京'], ['广州'], ['深圳']]
+    //   this.needArr.push({
+    //     id,
+    //     key,
+    //     children: value
+    //   })
+    //   this.positionArr.push({
+    //     children: value
+    //   })
+    //   id++
+    // }
+    const indexRes = await dataIndexes()
+    // console.log(cityRes)
+    this.indexData = indexRes.data
+    // 默认选中第一个
+    const cityData = this.indexData['热门'][0]
+    this.selectCity = cityData[0]
+    // 设置职位信息
+    this.positionData = cityData[1]
+    // 默认选中第一个
+    this.selectPosition = this.positionData[0]
   },
   mounted () {
     const myChart = echarts.init(this.$refs.charts) // 初始化实例
@@ -111,10 +179,10 @@ export default {
       tooltip: {
         trigger: 'item'
       },
-      // legend: {
-      //   top: '5%',
-      //   left: 'center'
-      // },
+      legend: {
+        top: '5%',
+        left: 'center'
+      },
       series: [
         {
           name: '饼图',

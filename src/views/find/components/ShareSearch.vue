@@ -11,7 +11,7 @@
       v-model="sms"
       center
       clearable
-      left-icon="smile-o"
+      left-icon="search"
       placeholder="请输入"
     >
       <template #button>

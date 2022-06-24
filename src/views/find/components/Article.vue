@@ -1,20 +1,27 @@
 <template>
   <div class="content">
-    <div class="article" v-for="l in list" :key="l.id" @click="goTechnic(l.id)">
-      <div class="left">
-        <h3>{{ l.title }}</h3>
-        <div class="time">
-          <p>{{ l.updated_at | formatTime }}</p>
-          <p>
-            <span><van-icon name="eye-o" />{{ l.read }}</span>
-            <span><van-icon name="good-job-o" />{{ l.star }}</span>
-          </p>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <div
+        class="article"
+        v-for="l in list"
+        :key="l.id"
+        @click="goTechnic(l.id)"
+      >
+        <div class="left">
+          <h3>{{ l.title }}</h3>
+          <div class="time">
+            <p>{{ l.updated_at | formatTime }}</p>
+            <p>
+              <span><van-icon name="eye-o" />{{ l.read }}</span>
+              <span><van-icon name="good-job-o" />{{ l.star }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="right">
+          <img :src="`http://106.55.138.21:1337${l.cover}`" alt="" />
         </div>
       </div>
-      <div class="right">
-        <img :src="`http://106.55.138.21:1337${l.cover}`" alt="" />
-      </div>
-    </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -24,18 +31,23 @@ export default {
   name: 'Article',
   data () {
     return {
-      list: []
+      list: [],
+      isLoading: false,
+      start: 0
     }
   },
   async created () {
-    // 面试技巧
-    const res = await articlesTechnic({
-      start: 0,
-      limit: 5
-    })
-    this.list = res.data.list
+    await this.loadData()
   },
   methods: {
+    async loadData () {
+      // 面试技巧
+      const res = await articlesTechnic({
+        start: this.start,
+        limit: 10
+      })
+      this.list = res.data.list
+    },
     goTechnic (id) {
       this.$router.push({
         name: 'technic',
@@ -43,6 +55,11 @@ export default {
           id
         }
       })
+    },
+    async onRefresh () {
+      this.isLoading = false
+      this.start = 0
+      await this.loadData()
     }
   }
 }
