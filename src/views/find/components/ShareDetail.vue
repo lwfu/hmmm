@@ -25,21 +25,24 @@
           <van-icon name="star-o" ref="collect" />{{ detail.collect }}
         </div>
         <div class="like" @click="handleStar"><van-icon name="good-job-o" ref="star" />{{ detail.star }}</div>
-        <div class="share">
-          <van-icon name="share-o" />{{ detail.share || 0 }}
+        <div class="share" @click="shareArticle">
+          <van-icon name="share-o"  />{{ detail.share || 0 }}
         </div>
       </div>
     </div>
+    <!-- 分享弹出层 -->
+    <sharePop v-model="showShare" :detail="detail1" />
   </div>
 </template>
 
 <script>
-import { articlesCollect, articlesShareDetail, articlesStar, setarticlesComments } from '@/api/articles'
+import { articlesCollect, articlesShareDetail, articlesStar, setarticlesComments, shareImg } from '@/api/articles'
 import Comment from './Comment'
+import sharePop from './sharePop.vue'
 
 export default {
   name: 'ShareDetail',
-  components: { Comment },
+  components: { Comment, sharePop },
   data () {
     return {
       detail: {
@@ -47,6 +50,11 @@ export default {
       },
       show: true,
       value: '', // 输入框内容
+      showShare: false,
+      detail1: {
+        star: 0,
+        collect: 0
+      },
       id: this.$route.params.id // 文章id
     }
   },
@@ -85,6 +93,13 @@ export default {
       this.$toast.success('点赞成功')
       this.$refs.star.style.color = 'red'
       this.load()
+    },
+    async shareArticle () {
+      // 滚到顶部
+      window.scrollTo(0, 0)
+      this.showShare = true
+      const shareRes = await shareImg({ id: this.id })
+      this.detail.share = shareRes.data.share
     }
   }
 }

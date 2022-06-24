@@ -109,3 +109,11 @@ export const articlesMergeHistory = data => {
     data
   })
 }
+
+export function shareImg (data) {
+  return request({
+    url: '/articles/shareImg',
+    method: 'post',
+    data
+  })
+}
