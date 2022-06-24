@@ -1,5 +1,5 @@
 <template>
-  <div class="find">
+  <div v-if="list.length" class="find">
     <van-nav-bar title="发现" fixed placeholder />
     <div class="border"></div>
     <!-- 面试技巧 -->

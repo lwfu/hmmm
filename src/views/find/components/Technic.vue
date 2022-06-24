@@ -1,6 +1,11 @@
 <template>
-  <div class="technic">
-    <van-nav-bar fixed placeholder left-arrow @click-left="$router.go(-1)" />
+  <div v-if="technic.id" class="technic">
+    <van-nav-bar
+      fixed
+      placeholder
+      left-arrow
+      @click-left="$route.meta.fromPath === '/findlist' ? $router.push('/findlist') : $router.push('/find')" 
+    />
     <div class="content">
       <header>
         <h2>{{ technic.title }}</h2>

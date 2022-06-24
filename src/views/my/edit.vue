@@ -170,8 +170,17 @@ export default {
 
     // 退出登录
     exitLout() {
-      this.$store.commit("LOGOUT");
-      this.$toast.success("退出登录");
+      this.$dialog.confirm({
+        title: '确认退出登录？',
+      })
+      .then(() => {
+        this.$store.dispatch("logout", '/login');
+        this.$toast.success({
+          message: "退出登录成功",
+          duration: 300
+        });
+      })
+      .catch(err => err)
     },
   },
   created() {

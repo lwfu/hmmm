@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import persisitedState from 'vuex-persistedstate'
 import { auLogin } from '@/api/user'
-import router from '../router/index'
+import router from '@/router'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -18,12 +18,6 @@ export default new Vuex.Store({
     // 存储用户信息
     SET_USERINFO (state, value) {
       state.userInfo = value
-    },
-    // 退出
-    LOGOUT (state) {
-      state.token = ''
-      state.userInfo = ''
-      router.push('/login?backUrl=' + location.href.split('#')[1])
     }
   },
   actions: {
@@ -34,6 +28,11 @@ export default new Vuex.Store({
         commit('SET_TOKEN', res.data.jwt)
         commit('SET_USERINFO', res.data.user)
       }
+    },
+    logout({ commit }, value) {
+      commit('SET_TOKEN', '')
+      commit('SET_USERINFO', '')
+      router.push(value)
     }
   },
   getters: {
@@ -42,7 +41,7 @@ export default new Vuex.Store({
   },
   plugins: [
     persisitedState({
-      path: ['token']
+      path: ['token, userInfo']
     })
   ]
 })

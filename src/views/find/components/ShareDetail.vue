@@ -1,6 +1,11 @@
 <template>
-  <div class="share-detail">
-    <van-nav-bar fixed placeholder left-arrow @click-left="$router.go(-1)" />
+  <div v-if="detail.id" class="share-detail">
+    <van-nav-bar
+      fixed
+      placeholder
+      left-arrow
+      @click-left="$route.meta.fromPath === '/sharelist' ? $router.push('/sharelist') : $router.push('/find')" 
+    />
     <div class="content">
       <header>
         <h2>{{ detail.title }}</h2>
@@ -51,7 +56,12 @@ export default {
   },
   async created () {
     const res = await articlesShareDetail(this.id)
-    this.detail = res.data
+    let content = res.data.content
+    content = content.replaceAll('http://47.106.228.28:1337', 'http://hmmm.zllhyy.cn/')
+    this.detail = {
+      ...res.data,
+      content
+    }
   },
   methods: {
     async send () {

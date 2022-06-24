@@ -2,7 +2,7 @@
   <div class="content">
     <div class="article" v-for="l in list" :key="l.id" @click="goTechnic(l.id)">
       <div class="left">
-        <h3>{{ l.title }}</h3>
+        <h3 :class="{w100: !l.cover}">{{ l.title }}</h3>
         <div class="time">
           <p>{{ l.updated_at | formatTime }}</p>
           <p>
@@ -11,8 +11,8 @@
           </p>
         </div>
       </div>
-      <div class="right">
-        <img :src="`http://106.55.138.21:1337${l.cover}`" alt="" />
+      <div v-if="l.cover" class="right">
+        <img :src="`http://hmmm.zllhyy.cn${l.cover}`" alt="" />
       </div>
     </div>
   </div>
@@ -93,5 +93,8 @@ export default {
       }
     }
   }
+}
+.w100 {
+  width: 100% !important;
 }
 </style>

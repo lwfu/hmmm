@@ -5,7 +5,7 @@
       fixed
       placeholder
       left-arrow
-      @click-left="$router.go(-1)"
+      @click-left="$router.push('/find')"
     />
     <van-search
       v-model="value"

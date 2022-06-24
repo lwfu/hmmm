@@ -6,19 +6,18 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    redirect: '/my'
-  },
-
-  {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/login/index.vue')
+    component: () => import('@/views/login/index.vue'),
+    meta: {
+      title: '登录页'
+    }
   },
 
   {
     path: '/',
     component: Layout,
+    redirect: '/my',
     children: [
       {
         path: 'company',
@@ -103,6 +102,7 @@ const routes = [
         // 路由懒加载
         component: () => import('../views/my/edit.vue'),
         meta: {
+          title: '修改信息',
           noTabbar: true
         }
       },
@@ -111,6 +111,7 @@ const routes = [
         // 路由懒加载
         component: () => import('../views/my/photo.vue'),
         meta: {
+          title: '修改头像',
           noTabbar: true
         }
       },
@@ -124,11 +125,25 @@ const routes = [
     meta: {
       title: '模拟面试'
     }
+  },
+  
+  {
+    path: '/details',
+    name: 'details',
+    component: () => import('@/views/company/compoents/details.vue'),
+    meta: {
+      title: '公司详情'
+    }
   }
 ]
 
 const router = new VueRouter({
   routes
 })
+
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
 
 export default router

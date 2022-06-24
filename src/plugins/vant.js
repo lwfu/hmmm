@@ -35,7 +35,8 @@ import {
   GoodsActionIcon,
   Loading,
   Tag,
-  Switch
+  Switch,
+  Rate,
 } from 'vant'
 
 Vue.use(Button)
@@ -68,8 +69,9 @@ Vue.use(Circle)
 Vue.use(GoodsAction)
 Vue.use(GoodsActionButton)
 Vue.use(GoodsActionIcon)
-Vue.use(Loading)
-Vue.use(Tag)
 Vue.use(Switch)
 Vue.use(IndexBar)
 Vue.use(IndexAnchor)
+Vue.use(Tag)
+Vue.use(Rate)
+Vue.use(Loading)

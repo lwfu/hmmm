@@ -56,7 +56,6 @@ export default {
       });
       this.$store.commit("SET_USERINFO", data);
       this.$toast.success("修改成功");
-      this.$store.commit("SET_PHOTO", this.files[0].url);
     },
   },
   created() {

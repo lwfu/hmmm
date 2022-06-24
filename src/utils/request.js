@@ -3,12 +3,12 @@ import store from '@/store'
 import { Toast } from 'vant'
 
 const request = axios.create({
-  baseURL: 'http://hmmm.zllhyy.cn'
+  baseURL: 'http://hmmm.zllhyy.cn/'
 })
-
 
 let cancelFns = []
 let toast;
+let err;
 // 请求拦截器
 request.interceptors.request.use(config => {
   if (!config.noToken) config.headers.authorization = `Bearer ${store.getters.token}`
@@ -39,18 +39,23 @@ request.interceptors.request.use(config => {
       })
     })
   }
+  err = false
   return config
 }, err => {
   return Promise.reject(err)
 })
 
 // 响应拦截器
-request.interceptors.response.use(res => {
+request.interceptors.response.use(async res => {
+  const data = res.data
   toast.clear()
-  Toast.success({
-    message: '加载成功',
-    duration: 100
-  })
+  if (data?.code === 401) {
+    if (err) return
+    err = true
+    await store.dispatch('logout', '/login?backUrl=' + location.href.split('#')[1])
+    Toast.fail('登录状态已过期，请重新登录！')
+    return 
+  }
   return res.data
 }, err => {
   return Promise.reject(err)

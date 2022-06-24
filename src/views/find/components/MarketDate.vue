@@ -5,7 +5,7 @@
       fixed
       placeholder
       left-arrow
-      @click-left="$router.go(-1)"
+      @click-left="$router.push('/find')"
     />
     <van-dropdown-menu>
       <van-dropdown-item v-model="value" :options="option">

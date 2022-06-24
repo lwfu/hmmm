@@ -12,7 +12,7 @@
             <van-index-bar>
               <template v-for="(item, index) in citys">
                 <van-index-anchor :index="item.key" :key="item.id" />
-                <van-cell :title="child" v-for="child in item.children" @click="changeCity(child)" />
+                <van-cell :title="child" v-for="(child, index) in item.children" :key="child+item.id" @click="changeCity(child)" />
               </template>
             </van-index-bar>
           </van-dropdown-item>
@@ -20,7 +20,7 @@
       </template>
     </van-nav-bar>
     <!-- Tabs -->
-    <van-cell v-if="tabsflag" class="question-tabs" :border="false">
+    <van-cell class="question-tabs" :border="false">
       <van-tabs v-model="active" type="card" title-active-color="#fff" title-inactive-color="#333" swipe-threshold="0">
         <van-tab
           v-for="tab in cityPositions[city]"
@@ -104,7 +104,6 @@ export default {
       flashTime: 1500,
       rate_total: 0,
       rate_curQuestion: 0,
-      tabsflag: true
     };
   },
   computed: {
@@ -125,11 +124,9 @@ export default {
   },
   methods: {
     changeCity(city) {
-      this.tabsflag = false
       this.city = city
       this.$refs.dropdownRef.toggle()
       this.$nextTick(() => {
-        this.tabsflag = true
       })
     },
     addCount(key, count, time) {
@@ -144,37 +141,49 @@ export default {
     async getQuestionCount() {
       this.bol = false
       if (!(this.active && this.city)) return
-      const { data } = await interviewQuestions({
-        type: this.active,
-        city: this.city
-      })
-      this.total = 0
-      this.currentQuestion = 0
-      this.rate_total = 0
-      this.rate_total = data.length
-      const cacheAnswer = JSON.parse(sessionStorage.getItem('answerList')) || []
-      this.rate_curQuestion = cacheAnswer.find(i => +i.key.type === this.active && i.key.city === this.city)?.value.length || 0
-      this.addCount('currentQuestion',this.rate_curQuestion, this.flashTime / 50)
-      this.addCount('total', this.rate_total, this.flashTime / data.length)
+      try {
+        const { data } = await interviewQuestions({
+          type: this.active,
+          city: this.city
+        })
+        this.total = 0
+        this.currentQuestion = 0
+        this.rate_total = 0
+        this.rate_total = data.length
+        const cacheAnswer = JSON.parse(sessionStorage.getItem('answerList')) || []
+        this.rate_curQuestion = cacheAnswer.find(i => +i.key.type === this.active && i.key.city === this.city)?.value.length || 0
+        this.addCount('currentQuestion',this.rate_curQuestion, this.flashTime / 50)
+        this.addCount('total', this.rate_total, this.flashTime / data.length)
+        this.$toast.success({
+          message: '加载成功',
+          duration: 500
+        })
+      } catch (error) {
+      }
       this.bol = true
     }
   },
   async created () {
     this.active = JSON.parse(sessionStorage.getItem('prevCategory'))?.active || ''
     this.city = JSON.parse(sessionStorage.getItem('prevCategory'))?.city || '全国'
-    const { data } = await interviewFilters()
-    this.cityPositions = data.cityPositions
-    let citys = []
-    let id = 0
-    for (const [key ,val] of Object.entries(data.citys)) {
-      citys.push({
-        id,
-        key,
-        children: val
-      })
-      id++
+    try {
+      const { data } = await interviewFilters()
+      let citys = []
+      let id = 0
+      for (const [key ,val] of Object.entries(data.citys)) {
+        citys.push({
+          id,
+          key,
+          children: val
+        })
+        id++
+      }
+      this.cityPositions = data.cityPositions
+      this.citys = citys
+    } catch (error) {
+      this.requestErr = true
     }
-    this.citys = citys
+    
   },
   destroyed () {
     const prevCategory = {

@@ -1,37 +1,54 @@
 <template>
-  <div>
+  <div class="company">
     <div class="search">
-      <div class="search-box">公司</div>
-      <van-search></van-search>
+      <van-search v-model="value" placeholder="请输入搜索关键词">
+        <template #left>
+          <div class="gs"><strong>公司</strong></div>
+        </template>
+      </van-search>
     </div>
+    <div class="img">
+      <img style="width:100%" src="./image/tupian.png" alt="" />
+    </div>
+    <screen ref="screenRef"/>
   </div>
 </template>
 
 <script>
-export default {};
+import screen from './compoents/screen.vue'
+export default {
+  name: 'company',
+  components: {
+    screen
+  },
+  data () {
+    return {
+      value: ''
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.search {
-  display: flex;
-  justify-content: space-around;
-  .van-search {
-    width: 80%;
+.company {
+  .search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+
+    .gs {
+      margin: 0 20px 0 0;
+      font-size: 20px;
+    }
+    .van-search__content {
+      border-radius: 15px;
+    }
+  }
+  .img {
+    padding: 0 10px;
+    margin-top: 55px;
   }
 }
-// .san {
-//   /* 当盒子宽高为0时，边框可以挤出三角形 */
-//   width: 0px;
-//   height: 0px;
-//   border: 40px solid red;
-//   /* 边框透明，设置对应方向颜色可看到三角形 */
-//   border: 10px solid transparent;
-//   border-left-color: red;
-
-//   position: absolute;
-//   top: 30px;
-//   left: 100px;
-//   // transform: translate(-90%);
-//   transform: rotate(90deg);
-// }
 </style>
