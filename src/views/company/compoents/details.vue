@@ -167,6 +167,9 @@ export default {
         border-radius: 3px;
         margin: 0 10px 10px 0;
         white-space: nowrap;
+        &:last-child {
+          margin-right: 0;
+        }
         .van-icon {
           color: #c4c4cc;
         }

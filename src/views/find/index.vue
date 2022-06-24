@@ -298,7 +298,7 @@ export default {
           }
         }
         .right {
-          width: 52px;
+          width: 60px;
           ::v-deep .van-icon-arrow-up {
             color: green;
             font-weight: 600;

@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     token: '',
     userInfo: '',
+    cityInfo: {}
   },
   mutations: {
     // 存储Token
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     // 存储用户信息
     SET_USERINFO (state, value) {
       state.userInfo = value
+    },
+    SET_CITYINFO (state, value) {
+      state.cityInfo = value
     }
   },
   actions: {
@@ -32,12 +36,17 @@ export default new Vuex.Store({
     logout({ commit }, value) {
       commit('SET_TOKEN', '')
       commit('SET_USERINFO', '')
+      commit('SET_CITYINFO', {})
       router.push(value)
+    },
+    savaCityInfo({ commit }, value) {
+      commit('SET_CITYINFO', value)
     }
   },
   getters: {
     token: state => state.token,
-    userInfo: state => state.userInfo
+    userInfo: state => state.userInfo,
+    cityInfo: state => state.cityInfo
   },
   plugins: [
     persisitedState({

@@ -116,9 +116,19 @@ export default {
   },
   watch: {
     city(newValue) {
+      const prevCategory = {
+        active: this.active,
+        city: newValue
+      }
+      sessionStorage.setItem('prevCategory', JSON.stringify(prevCategory))
       this.getQuestionCount()
     },
     active(newValue) {
+      const prevCategory = {
+        active: newValue,
+        city: this.city
+      }
+      sessionStorage.setItem('prevCategory', JSON.stringify(prevCategory))
       this.getQuestionCount()
     }
   },
@@ -154,10 +164,6 @@ export default {
         this.rate_curQuestion = cacheAnswer.find(i => +i.key.type === this.active && i.key.city === this.city)?.value.length || 0
         this.addCount('currentQuestion',this.rate_curQuestion, this.flashTime / 50)
         this.addCount('total', this.rate_total, this.flashTime / data.length)
-        this.$toast.success({
-          message: '加载成功',
-          duration: 500
-        })
       } catch (error) {
       }
       this.bol = true
@@ -167,6 +173,11 @@ export default {
     this.active = JSON.parse(sessionStorage.getItem('prevCategory'))?.active || ''
     this.city = JSON.parse(sessionStorage.getItem('prevCategory'))?.city || '全国'
     try {
+      if (this.$store.getters.cityInfo.citys) {
+        this.cityPositions = this.$store.getters.cityInfo.cityPositions
+        this.citys = this.$store.getters.cityInfo.citys
+        return
+      }
       const { data } = await interviewFilters()
       let citys = []
       let id = 0
@@ -180,6 +191,11 @@ export default {
       }
       this.cityPositions = data.cityPositions
       this.citys = citys
+      const cache = {
+        cityPositions: this.cityPositions,
+        citys: this.citys
+      }
+      this.$store.dispatch('savaCityInfo', cache)
     } catch (error) {
       this.requestErr = true
     }
@@ -216,6 +232,8 @@ export default {
   ::v-deep .question-tabs {
     padding: 0;
     .van-tabs {
+      display: flex;
+      justify-content: center;
       .van-tabs__wrap {
         padding: 20px 0;
       }
@@ -225,6 +243,8 @@ export default {
       }
       .van-tab {
         background-color: #F6F4F5;
+        max-width: 60px;
+        max-height: 25px;
         margin: 5px;
         border: none;
         padding: 12px;

@@ -5,7 +5,7 @@
       fixed
       placeholder
       left-arrow
-      @click-left="$router.go(-1)"
+      @click-left="$route.meta.fromPath === '/sharelist' ? $router.push('/sharelist') : $router.push('/find')" 
     />
     <van-field
       v-model="sms"
