@@ -12,6 +12,7 @@
       placeholder="请输入搜索关键词"
       input-align="center"
       shape="round"
+      @click="$router.push({ name: 'technicsearch' })"
     />
     <div class="border"></div>
     <Article></Article>

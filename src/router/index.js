@@ -100,6 +100,15 @@ const routes = [
         }
       },
       {
+        path: 'technicsearch',
+        name: 'technicsearch',
+        component: () => import('@/views/find/components/TechnicSearch.vue'),
+        meta: {
+          title: '面试技巧搜索',
+          noTabbar: true
+        }
+      },
+      {
         path: 'my',
         name: 'my',
         component: () => import('@/views/my/index.vue'),
