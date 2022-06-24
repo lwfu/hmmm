@@ -9,7 +9,8 @@ const whiteList = [
   'technic',
   'sharedetail',
   '/findlist',
-  '/sharelist'
+  '/sharelist',
+  'technicsearch'
 ]
 
 router.beforeEach(async (to, from, next) => {
